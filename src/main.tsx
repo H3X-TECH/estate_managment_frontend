@@ -6,9 +6,9 @@ import { NextUIProvider } from "@nextui-org/react";
 import "./index.css";
 
 createRoot(document.getElementById("root") as HTMLElement).render(
-	<StrictMode>
-		<NextUIProvider>
-			<AppRoutes />
-		</NextUIProvider>
-	</StrictMode>,
+  <StrictMode>
+    <NextUIProvider>
+      <AppRoutes />
+    </NextUIProvider>
+  </StrictMode>
 );
