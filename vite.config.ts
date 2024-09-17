@@ -11,7 +11,7 @@ export default defineConfig({
     cors: true,
     proxy: {
       "/api": {
-        target: import.meta.env.VITE_BASE_API_URL,
+        target: "localhost",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },

@@ -8,3 +8,12 @@
     font-family: "Inter Tight", sans-serif;
     font-optical-sizing: auto;
 }
+
+.leaflet-container {
+    height: 500px !important;
+
+}
+
+.leaflet-control-attribution {
+    display: none !important;
+}
