@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError, isAxiosError } from "axios";
 
 const axiosInstance = axios.create({
   baseURL: "/api",
@@ -6,10 +6,21 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-export const fetcher = async <P>(method: string, url: string, payload?: P) => {
-  return await axiosInstance({
-    method,
-    url,
-    data: payload,
-  });
+export const fetcher = async <P>(
+  method: "get" | "post" | "delete",
+  url: string,
+  payload?: P
+) => {
+  try {
+    const resp = await axiosInstance({
+      method,
+      url,
+      data: payload,
+    });
+    return resp?.data;
+  } catch (error) {
+    const err = error as AxiosError;
+    if (!isAxiosError(err)) return err;
+    return err.response?.data;
+  }
 };

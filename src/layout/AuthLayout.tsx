@@ -1,35 +1,25 @@
 import { Outlet } from "react-router";
-import {
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
-  Avatar,
-} from "@nextui-org/react";
-import { StyledButton } from "~/styled-components/StyledButton";
 
 const AuthLayout = () => {
   return (
-    <div className="hero-pattern-one flex flex-col min-h-screen">
-      <header className="py-4 m-2 bg-neutral-100 border rounded-xl backdrop-blur-md px-4 flex items-center justify-between">
+    <div className="flex flex-col min-h-screen">
+      {/* <header className="py-4 mt-2 bg-neutral-100 border rounded-xl backdrop-blur-md px-4 flex items-center justify-between">
         <h4 className="text-xl italic font-semibold tracking-wider">
           EasyRent
         </h4>
-        {/* <div className="flex items-center mx-auto gap-8">
-          <NavLink to="/">Rent</NavLink>
-          <NavLink to="/">Buy</NavLink>
-          <NavLink to="/">Sell</NavLink>
-          <NavLink to="/">Help</NavLink>
-          <NavLink to="/">Contact Us</NavLink>
-        </div> */}
         <div>
           <StyledButton>Login/SignUp</StyledButton>
         </div>
-      </header>
-      <section className="flex-grow">
-        <Outlet />
-      </section>
-      <footer>Footer</footer>
+      </header> */}
+      <main className="flex-grow flex items-center h-[100dvh]">
+        <section className="basis-2/5 h-full hero-pattern-one rounded-tr-3xl flex flex-col items-center justify-center">
+          <h5 className="text-4xl">Find Your Perfect Place</h5>
+          <h5 className="text-4xl">With Us.</h5>
+        </section>
+        <section className="basis-3/5 rounded-bl-3xl h-full bg-white">
+          <Outlet />
+        </section>
+      </main>
     </div>
   );
 };
