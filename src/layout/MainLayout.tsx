@@ -31,6 +31,7 @@ const MainLayout = () => {
               <DropdownItem>Profile</DropdownItem>
               <DropdownItem>Message</DropdownItem>
               <DropdownItem>Wishlists</DropdownItem>
+              <DropdownItem>Logout</DropdownItem>
             </DropdownMenu>
           </Dropdown>
         </div>

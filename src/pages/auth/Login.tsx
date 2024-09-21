@@ -3,6 +3,10 @@ import { StyledButton } from "~/styled-components/StyledButton";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { fetcher } from "~/lib/fetcher";
+import { toast } from "sonner";
+import { useNavigate } from "react-router";
 
 const schema = z.object({
   email: z.string().email("Please enter valid email"),
@@ -22,8 +26,22 @@ const LoginPage = () => {
     },
   });
 
-  const onSubmit = (values: any) => {
+  const navigate = useNavigate();
+
+  const login = useMutation({
+    mutationFn: async (payload: z.infer<typeof schema>) => {
+      return await fetcher("post", "/auth/login", payload);
+    },
+    onSuccess: (resp) => {
+      console.log("success", resp);
+      localStorage.setItem("access_token", resp.access_token);
+      navigate("/");
+    },
+  });
+
+  const onSubmit = (values: z.infer<typeof schema>) => {
     console.log(values);
+    login.mutate(values);
   };
 
   return (

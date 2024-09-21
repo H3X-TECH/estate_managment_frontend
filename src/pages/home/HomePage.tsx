@@ -3,6 +3,8 @@ import CarouselCard from "~/components/CarouselCard";
 import estate_one from "~/assets/estate_1.jpg";
 import estate_two from "~/assets/estate_2.jpg";
 import estate_three from "~/assets/estate_3.jpg";
+import { useQuery } from "@tanstack/react-query";
+import { fetcher } from "~/lib/fetcher";
 
 const sample_images = [
   {
@@ -19,6 +21,15 @@ const sample_images = [
   },
 ];
 const HomePage = () => {
+  const { data } = useQuery({
+    queryKey: ["/profile"],
+    queryFn: async () => {
+      return await fetcher("get", "/auth/profile");
+    },
+  });
+
+  console.log("profile data ", data);
+
   return (
     <div className="p-8">
       <div className="flex items-center gap-4">
@@ -29,6 +40,7 @@ const HomePage = () => {
           <CarouselCard images={sample_images} title="Estate Two" />
         </div>
       </div>
+      <div>{JSON.stringify(data)}</div>
     </div>
   );
 };
