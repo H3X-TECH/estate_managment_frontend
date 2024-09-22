@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { fetcher } from "~/lib/fetcher";
-import { toast } from "sonner";
 import { useNavigate } from "react-router";
 
 const schema = z.object({
@@ -65,7 +64,12 @@ const LoginPage = () => {
               type="password"
               label="Password"
             />
-            <StyledButton color="secondary" type="submit" className="w-full">
+            <StyledButton
+              color="secondary"
+              type="submit"
+              className="w-full"
+              isLoading={login.isPending}
+            >
               Login
             </StyledButton>
             <div className="flex gap-2 items-center w-full">
