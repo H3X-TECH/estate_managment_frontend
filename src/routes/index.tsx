@@ -1,15 +1,20 @@
-import { RouterProvider } from "react-router";
-import { createBrowserRouter } from "react-router-dom";
+import { useNavigate, useRoutes } from "react-router-dom";
 import MainLayout from "../layout/MainLayout";
 import HomePage from "~/pages/home/HomePage";
 import LoginPage from "~/pages/auth/Login";
 import AuthLayout from "~/layout/AuthLayout";
 import SignUpPage from "~/pages/auth/SignUpPage";
+import { NextUIProvider } from "@nextui-org/react";
+import ProtectedRoute from "./ProtectedRoute";
 
-const router = createBrowserRouter([
+const routes = [
   {
     path: "/",
-    element: <MainLayout />,
+    element: (
+      <ProtectedRoute>
+        <MainLayout />
+      </ProtectedRoute>
+    ),
     caseSensitive: true,
 
     children: [
@@ -37,10 +42,12 @@ const router = createBrowserRouter([
       },
     ],
   },
-]);
+];
 
 const AppRoutes = () => {
-  return <RouterProvider router={router} />;
+  const router = useRoutes(routes);
+  const navigate = useNavigate();
+  return <NextUIProvider navigate={navigate}>{router}</NextUIProvider>;
 };
 
 export default AppRoutes;

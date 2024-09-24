@@ -1,7 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import AppRoutes from "./routes/index.tsx";
-import { NextUIProvider } from "@nextui-org/react";
 
 import {
   MutationCache,
@@ -12,11 +11,13 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { toast, Toaster } from "sonner";
 
 import "./index.css";
+import { BrowserRouter } from "react-router-dom";
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnMount: false,
+      retry: 3,
     },
     // mutations: {}
   },
@@ -30,12 +31,12 @@ const queryClient = new QueryClient({
 
 createRoot(document.getElementById("root") as HTMLElement).render(
   <StrictMode>
-    <NextUIProvider>
+    <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <Toaster position="top-center" richColors />
         <AppRoutes />
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
-    </NextUIProvider>
+    </BrowserRouter>
   </StrictMode>
 );
