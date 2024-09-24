@@ -5,10 +5,14 @@ import {
   DropdownMenu,
   DropdownItem,
   Avatar,
+  Link,
 } from "@nextui-org/react";
 import { NavLink } from "react-router-dom";
+import { StyledButton } from "~/styled-components/StyledButton";
+import { useAuth } from "~/routes/ProtectedRoute";
 
 const MainLayout = () => {
+  const { isLoggedIn } = useAuth();
   return (
     <div className="flex flex-col min-h-screen">
       <header className="py-4 m-2 bg-neutral-100 border rounded-xl backdrop-blur-md px-4 flex items-center">
@@ -20,20 +24,26 @@ const MainLayout = () => {
           <NavLink to="/">Buy</NavLink>
           <NavLink to="/">Sell</NavLink>
           <NavLink to="/">Help</NavLink>
-          <NavLink to="/">Contact Us</NavLink>
+          <NavLink to="/search">Contact Us</NavLink>
         </div>
         <div>
-          <Dropdown>
-            <DropdownTrigger>
-              <Avatar name="H" />
-            </DropdownTrigger>
-            <DropdownMenu>
-              <DropdownItem>Profile</DropdownItem>
-              <DropdownItem>Message</DropdownItem>
-              <DropdownItem>Wishlists</DropdownItem>
-              <DropdownItem>Logout</DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
+          {isLoggedIn ? (
+            <Dropdown>
+              <DropdownTrigger>
+                <Avatar name="H" />
+              </DropdownTrigger>
+              <DropdownMenu>
+                <DropdownItem>Profile</DropdownItem>
+                <DropdownItem>Message</DropdownItem>
+                <DropdownItem>Wishlists</DropdownItem>
+                <DropdownItem>Logout</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          ) : (
+            <StyledButton as={Link} href="/auth/login">
+              Login/Signup
+            </StyledButton>
+          )}
         </div>
       </header>
       <section className="flex-grow">

@@ -1,4 +1,4 @@
-import { Divider, Input } from "@nextui-org/react";
+import { Divider, Input, Link } from "@nextui-org/react";
 import { StyledButton } from "~/styled-components/StyledButton";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -33,7 +33,8 @@ const LoginPage = () => {
     },
     onSuccess: (resp) => {
       console.log("success", resp);
-      localStorage.setItem("access_token", resp.access_token);
+      localStorage.setItem("access_token", resp.accessToken);
+      localStorage.setItem("refresh_token", resp.refreshToken);
       navigate("/");
     },
   });
@@ -44,9 +45,9 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center w-full h-full">
+    <div className="flex items-center justify-center w-full h-full relative">
       <div className="max-w-[500px] px-4 py-8 w-8/12 rounded-md">
-        <h4 className="text-xl font-semibold mb-8">Welcome back!</h4>
+        <h4 className="text-2xl font-semibold mb-6">Welcome back!</h4>
         <form onSubmit={handleSubmit(onSubmit)}>
           <section className="space-y-6">
             <Input
@@ -65,7 +66,6 @@ const LoginPage = () => {
               label="Password"
             />
             <StyledButton
-              color="secondary"
               type="submit"
               className="w-full"
               isLoading={login.isPending}
@@ -74,14 +74,22 @@ const LoginPage = () => {
             </StyledButton>
             <div className="flex gap-2 items-center w-full">
               <Divider className="flex-1" />
-              <span className="text-sm">Don&apos;t have an account yet?</span>
+              <span className="text-sm">Or continue with</span>
               <Divider className="flex-1" />
             </div>
             <StyledButton color="default" className="w-full">
-              Create an account
+              Google
             </StyledButton>
           </section>
         </form>
+        <StyledButton
+          as={Link}
+          href="/auth/sign-up"
+          variant="light"
+          className="absolute text-black top-6 right-6"
+        >
+          Sign up
+        </StyledButton>
       </div>
     </div>
   );

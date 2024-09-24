@@ -13,18 +13,18 @@ export default {
   },
   plugins: [
     nextui({
-      themes: {
-        light: {
-          colors: {
-            primary: "#7c3aed",
-          },
-        },
-        dark: {
-          colors: {
-            primary: "#7c3aed",
-          },
-        },
-      },
+      // themes: {
+      //   light: {
+      //     colors: {
+      //       primary: "#7c3aed",
+      //     },
+      //   },p
+      //   dark: {
+      //     colors: {
+      //       primary: "#7c3aed",
+      //     },
+      //   },
+      // },
     }),
   ],
 };
