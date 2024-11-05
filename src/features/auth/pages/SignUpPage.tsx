@@ -4,8 +4,9 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { fetcher } from "~/lib/fetcher";
 import { useNavigate } from "react-router";
+import { useAuthStore } from "~/stores/auth";
+import { signUpUser } from "../services";
 
 const schema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),
@@ -31,16 +32,18 @@ const SignUpPage = () => {
     },
   });
 
+  const { setIsLoggedIn, setAccessToken, setRefreshToken } = useAuthStore();
   const navigate = useNavigate();
 
   const signUp = useMutation({
     mutationFn: async (payload: SignUpSchemaType) => {
-      return await fetcher("post", "/auth/sign-up", payload);
+      return await signUpUser(payload);
     },
     onSuccess: (resp) => {
       console.log("success", resp);
-      localStorage.setItem("access_token", resp.accessToken);
-      localStorage.setItem("refresh_token", resp.refreshToken);
+      setAccessToken(resp.data.accessToken);
+      setRefreshToken(resp.data.refreshToken);
+      setIsLoggedIn(true);
       navigate("/");
     },
   });

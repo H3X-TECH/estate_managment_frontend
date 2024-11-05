@@ -4,8 +4,9 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { fetcher } from "~/lib/fetcher";
 import { useNavigate } from "react-router";
+import { useAuthStore } from "~/stores/auth";
+import { loginUser } from "../services";
 
 const schema = z.object({
   email: z.string().email("Please enter valid email"),
@@ -25,16 +26,18 @@ const LoginPage = () => {
     },
   });
 
+  const { setIsLoggedIn, setAccessToken, setRefreshToken } = useAuthStore();
   const navigate = useNavigate();
 
   const login = useMutation({
     mutationFn: async (payload: z.infer<typeof schema>) => {
-      return await fetcher("post", "/auth/login", payload);
+      return await loginUser(payload);
     },
     onSuccess: (resp) => {
       console.log("success", resp);
-      localStorage.setItem("access_token", resp.accessToken);
-      localStorage.setItem("refresh_token", resp.refreshToken);
+      setAccessToken(resp.data.accessToken);
+      setRefreshToken(resp.data.refreshToken);
+      setIsLoggedIn(true);
       navigate("/");
     },
   });
