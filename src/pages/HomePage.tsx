@@ -5,6 +5,7 @@ import estate_two from "~/assets/estate_2.jpg";
 import estate_three from "~/assets/estate_3.jpg";
 import { useQuery } from "@tanstack/react-query";
 import { fetcher } from "~/lib/fetcher";
+import { useAuthStore } from "~/stores/auth";
 
 const sample_images = [
   {
@@ -28,7 +29,11 @@ const HomePage = () => {
     },
   });
 
+  const { accessToken, refreshToken } = useAuthStore();
+
   console.log("profile data ", data);
+
+  console.log("tokens ", accessToken, refreshToken);
 
   return (
     <div className="p-8">

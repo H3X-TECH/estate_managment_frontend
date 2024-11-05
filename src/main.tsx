@@ -1,9 +1,10 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import AppRoutes from "./routes/index.tsx";
+import Router from "./routes/Router";
 
 import {
   MutationCache,
+  QueryCache,
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
@@ -21,6 +22,12 @@ const queryClient = new QueryClient({
     },
     // mutations: {}
   },
+  queryCache: new QueryCache({
+    onError: (err) => {
+      console.log("query error ", err);
+      toast.error(err.message);
+    },
+  }),
   mutationCache: new MutationCache({
     onError: (err) => {
       console.log("mutation error ", err);
@@ -34,9 +41,9 @@ createRoot(document.getElementById("root") as HTMLElement).render(
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <Toaster position="top-center" richColors />
-        <AppRoutes />
+        <Router />
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </BrowserRouter>
-  </StrictMode>
+  </StrictMode>,
 );

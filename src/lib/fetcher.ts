@@ -1,4 +1,5 @@
 import axios, { type AxiosError, isAxiosError } from "axios";
+import { useAuthStore } from "~/stores/auth";
 
 const axiosInstance = axios.create({
   baseURL: "/api",
@@ -31,7 +32,8 @@ export const fetcher = async <P>(
   payload?: P
 ) => {
   try {
-    const accessToken = localStorage.getItem("access_token");
+    // const accessToken = localStorage.getItem("access_token");
+    const accessToken = useAuthStore.getState().accessToken;
     const resp = await axiosInstance({
       method,
       url,
@@ -47,9 +49,8 @@ export const fetcher = async <P>(
 
     // assume access token expired and manually update it with refresh token
     if (err.response?.status === 401) {
-      const refreshToken = localStorage.getItem("refresh_token");
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("refresh_token");
+      // const refreshToken = localStorage.getItem("refresh_token");
+      const refreshToken = useAuthStore.getState().refreshToken;
       const resp = await axiosInstance({
         method: "get",
         url: "/auth/refresh-tokens",
@@ -57,8 +58,10 @@ export const fetcher = async <P>(
           Authorization: `Bearer ${refreshToken}`,
         },
       });
-      localStorage.setItem("access_token", resp?.data?.accessToken);
-      localStorage.setItem("refresh_token", resp?.data?.refreshToken);
+      useAuthStore.setState({
+        accessToken: resp?.data?.data?.accessToken,
+        refreshToken: resp?.data?.data?.refreshToken,
+      });
     }
 
     if (!isAxiosError(err)) return;
