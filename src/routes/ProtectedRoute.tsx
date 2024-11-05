@@ -1,32 +1,11 @@
-import { type FC, type PropsWithChildren, useEffect, useState } from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import type { FC, PropsWithChildren } from "react";
+import { Navigate } from "react-router-dom";
+import { useAuthStore } from "~/stores/auth";
 
 const ProtectedRoute: FC<PropsWithChildren> = ({ children }) => {
-  const { isLoggedIn } = useAuth();
-
+  const { isLoggedIn } = useAuthStore();
+  console.log("isLoggedIN ", isLoggedIn);
   return <>{isLoggedIn ? children : <Navigate to="/auth/login" replace />}</>;
 };
 
 export default ProtectedRoute;
-
-export const useAuth = () => {
-  const [accessToken, setAccessToken] = useState<string | undefined>();
-  const [refreshToken, setRefreshToken] = useState<string | undefined>();
-  const { pathname } = useLocation();
-  const accessTokenFromStorage = localStorage.getItem("access_token");
-  const refreshTokenFromStorage = localStorage.getItem("refresh_token");
-
-  //   useEffect(() => {
-  //     console.log(accessTokenFromStorage, refreshTokenFromStorage);
-  //     if (accessTokenFromStorage && refreshTokenFromStorage) {
-  //       setAccessToken(accessTokenFromStorage);
-  //       setRefreshToken(refreshTokenFromStorage);
-  //     }
-  //   }, [pathname, accessToken, refreshToken]);
-
-  return {
-    isLoggedIn: !!accessTokenFromStorage || !!refreshTokenFromStorage,
-    accessToken,
-    refreshToken,
-  };
-};
