@@ -2,8 +2,8 @@ import MainLayout from "~/layout/MainLayout";
 import ProtectedRoute from "./ProtectedRoute";
 import HomePage from "~/features/home/HomePage";
 import AuthLayout from "~/layout/AuthLayout";
-import LoginPage from "~/features/auth/pages/LoginPage";
-import SignUpPage from "~/features/auth/pages/SignUpPage";
+import LoginPage from "~/pages/LoginPage";
+import SignUpPage from "~/pages/SignUpPage";
 
 const routesList = [
   {
