@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { useAuthStore } from "~/stores/auth";
-import { signUpUser } from "./services";
+import { signUpUser } from "../services";
 
 const schema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters"),

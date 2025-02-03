@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { useAuthStore } from "~/stores/auth";
-import { loginUser } from "./services";
+import { loginUser } from "../services";
 
 const schema = z.object({
   email: z.string().email("Please enter valid email"),

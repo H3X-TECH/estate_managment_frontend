@@ -9,10 +9,9 @@ import {
 } from "@nextui-org/react";
 import { NavLink } from "react-router-dom";
 import { StyledButton } from "~/styled-components/StyledButton";
-import { useAuth } from "~/routes/ProtectedRoute";
 
 const MainLayout = () => {
-  const { isLoggedIn } = useAuth();
+  const isLoggedIn = false;
   return (
     <div className="flex flex-col min-h-screen">
       <header className="py-4 m-2 bg-neutral-100 border rounded-xl backdrop-blur-md px-4 flex items-center">

@@ -2,8 +2,9 @@ import MainLayout from "~/layout/MainLayout";
 import ProtectedRoute from "./ProtectedRoute";
 import HomePage from "~/features/home/HomePage";
 import AuthLayout from "~/layout/AuthLayout";
-import LoginPage from "~/pages/LoginPage";
-import SignUpPage from "~/pages/SignUpPage";
+import LoginPage from "~/features/auth/views/LoginPage";
+import SignUpPage from "~/features/auth/views/SignUpPage";
+import TestPage from "~/pages/test-page";
 
 const routesList = [
   {
@@ -18,6 +19,10 @@ const routesList = [
       {
         index: true,
         element: <HomePage />,
+      },
+      {
+        path: "/test",
+        element: <TestPage />,
       },
       {
         path: "/search",

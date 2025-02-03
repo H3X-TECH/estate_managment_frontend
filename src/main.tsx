@@ -18,6 +18,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnMount: false,
+      refetchOnWindowFocus: false,
       retry: 3,
     },
     // mutations: {}
@@ -45,5 +46,5 @@ createRoot(document.getElementById("root") as HTMLElement).render(
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </BrowserRouter>
-  </StrictMode>,
+  </StrictMode>
 );
