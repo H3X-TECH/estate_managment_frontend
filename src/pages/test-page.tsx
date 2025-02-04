@@ -6,7 +6,7 @@ import {
   ModalFooter,
   useDisclosure,
   Input,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { Controller, useForm } from "react-hook-form";
 import { StyledButton } from "~/styled-components/StyledButton";
 import { z } from "zod";
@@ -102,7 +102,7 @@ function ModelForm({
   };
 
   return (
-    <Modal
+    (<Modal
       as="form"
       isOpen={isOpen}
       // onOpenChange={onOpenChange}
@@ -170,6 +170,6 @@ function ModelForm({
           </StyledButton>
         </ModalFooter>
       </ModalContent>
-    </Modal>
+    </Modal>)
   );
 }

@@ -1,11 +1,11 @@
 import { useNavigate, useRoutes } from "react-router-dom";
-import { NextUIProvider } from "@nextui-org/react";
+import { HeroUIProvider } from "@heroui/react";
 import routesList from "./RoutesList";
 
 const Router = () => {
   const router = useRoutes(routesList);
   const navigate = useNavigate();
-  return <NextUIProvider navigate={navigate}>{router}</NextUIProvider>;
+  return <HeroUIProvider navigate={navigate}>{router}</HeroUIProvider>;
 };
 
 export default Router;

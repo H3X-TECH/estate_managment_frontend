@@ -6,7 +6,7 @@ import {
   DropdownItem,
   Avatar,
   Link,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { NavLink } from "react-router-dom";
 import { StyledButton } from "~/styled-components/StyledButton";
 

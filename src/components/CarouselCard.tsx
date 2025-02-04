@@ -6,7 +6,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "./EmblaCarousel";
-import { Image } from "@nextui-org/react";
+import { Image } from "@heroui/react";
 
 type CarouselCardProps = {
   images: Array<{ alt: string; src: string }>;

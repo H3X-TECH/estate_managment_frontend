@@ -1,4 +1,4 @@
-import { Divider, Input, Link } from "@nextui-org/react";
+import { Divider, Input, Link } from "@heroui/react";
 import { StyledButton } from "~/styled-components/StyledButton";
 import { z } from "zod";
 import { useForm } from "react-hook-form";

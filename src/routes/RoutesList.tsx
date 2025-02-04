@@ -5,6 +5,7 @@ import AuthLayout from "~/layout/AuthLayout";
 import LoginPage from "~/features/auth/views/LoginPage";
 import SignUpPage from "~/features/auth/views/SignUpPage";
 import TestPage from "~/pages/test-page";
+import ForgotPasswordPage from "~/features/auth/views/ForgotPasswordPage";
 
 const routesList = [
   {
@@ -41,6 +42,10 @@ const routesList = [
       {
         path: "sign-up",
         element: <SignUpPage />,
+      },
+      {
+        path: "forgot-password",
+        element: <ForgotPasswordPage />,
       },
     ],
   },
