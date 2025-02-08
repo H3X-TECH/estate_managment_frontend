@@ -6,6 +6,7 @@ import LoginPage from "~/features/auth/views/LoginPage";
 import SignUpPage from "~/features/auth/views/SignUpPage";
 import TestPage from "~/pages/test-page";
 import ForgotPasswordPage from "~/features/auth/views/ForgotPasswordPage";
+import ResetPasswordPage from "~/features/auth/views/ResetPasswordPage";
 
 const routesList = [
   {
@@ -46,6 +47,10 @@ const routesList = [
       {
         path: "forgot-password",
         element: <ForgotPasswordPage />,
+      },
+      {
+        path: "reset-password/:token",
+        element: <ResetPasswordPage />,
       },
     ],
   },

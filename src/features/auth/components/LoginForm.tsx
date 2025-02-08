@@ -58,14 +58,19 @@ const LoginForm = () => {
             variant="bordered"
             label="Email"
           />
-          <Input
-            {...register("password")}
-            isInvalid={!!errors.password}
-            errorMessage={errors.password?.message}
-            variant="bordered"
-            type="password"
-            label="Password"
-          />
+          <div>
+            <Input
+              {...register("password")}
+              isInvalid={!!errors.password}
+              errorMessage={errors.password?.message}
+              variant="bordered"
+              type="password"
+              label="Password"
+            />
+            <Link href="/auth/forgot-password" className="text-xs">
+              Forgot your password?
+            </Link>
+          </div>
           <StyledButton
             type="submit"
             className="w-full"
