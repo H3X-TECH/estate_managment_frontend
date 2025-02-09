@@ -26,7 +26,7 @@ const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: (err) => {
       console.log("query error ", err);
-      toast.error(err.message);
+      // toast.error(err.message);
     },
   }),
   mutationCache: new MutationCache({

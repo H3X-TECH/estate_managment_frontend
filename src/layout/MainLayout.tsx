@@ -14,35 +14,32 @@ const MainLayout = () => {
   const isLoggedIn = false;
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="py-4 m-2 bg-neutral-100 border rounded-xl backdrop-blur-md px-4 flex items-center">
-        <h4 className="text-xl italic font-semibold tracking-wider">
-          EasyRent
-        </h4>
-        <div className="flex items-center mx-auto gap-8">
-          <NavLink to="/">Rent</NavLink>
-          <NavLink to="/">Buy</NavLink>
-          <NavLink to="/">Sell</NavLink>
-          <NavLink to="/">Help</NavLink>
-          <NavLink to="/search">Contact Us</NavLink>
-        </div>
-        <div>
-          {isLoggedIn ? (
-            <Dropdown>
-              <DropdownTrigger>
-                <Avatar name="H" />
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem>Profile</DropdownItem>
-                <DropdownItem>Message</DropdownItem>
-                <DropdownItem>Wishlists</DropdownItem>
-                <DropdownItem>Logout</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          ) : (
-            <StyledButton as={Link} href="/auth/login">
-              Login/Signup
-            </StyledButton>
-          )}
+      <header className="py-4 bg-neutral-100 border-b backdrop-blur-md px-4 flex items-center">
+        <div className="max-w-screen-xl flex items-center w-full mx-auto">
+          <h4 className="text-lg font-semibold tracking-wider">eainsharmal</h4>
+          <div className="flex items-center mx-auto gap-8">
+            <NavLink to="/">Rent</NavLink>
+            <NavLink to="/">Buy</NavLink>
+            <NavLink to="/">Help</NavLink>
+            <NavLink to="/search">About Us</NavLink>
+          </div>
+          <div>
+            {isLoggedIn ? (
+              <Dropdown>
+                <DropdownTrigger>
+                  <Avatar name="H" />
+                </DropdownTrigger>
+                <DropdownMenu>
+                  <DropdownItem key="profile">Profile</DropdownItem>
+                  <DropdownItem key="logout">Logout</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            ) : (
+              <StyledButton as={Link} href="/auth/login">
+                Login/Signup
+              </StyledButton>
+            )}
+          </div>
         </div>
       </header>
       <section className="flex-grow">
