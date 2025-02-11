@@ -6,6 +6,8 @@ import estate_three from "~/assets/estate_3.jpg";
 import { useQuery } from "@tanstack/react-query";
 import { fetcher } from "~/lib/fetcher";
 import { useAuthStore } from "~/stores/auth";
+import HeroSection from "./components/HeroSection";
+import FilterSection from "./components/FilterSection";
 
 const sample_images = [
   {
@@ -22,22 +24,24 @@ const sample_images = [
   },
 ];
 const HomePage = () => {
-  const { data } = useQuery({
-    queryKey: ["/profile"],
-    queryFn: async () => {
-      return await fetcher("get", "/auth/profile");
-    },
-  });
+  // const { data } = useQuery({
+  //   queryKey: ["/profile"],
+  //   queryFn: async () => {
+  //     return await fetcher("get", "/auth/profile");
+  //   },
+  // });
 
-  const { accessToken, refreshToken } = useAuthStore();
+  // const { accessToken, refreshToken } = useAuthStore();
 
-  console.log("profile data ", data);
+  // console.log("profile data ", data);
 
-  console.log("tokens ", accessToken, refreshToken);
+  // console.log("tokens ", accessToken, refreshToken);
 
   return (
-    <div className="p-8">
-      <div className="flex items-center gap-4">
+    <div className="min-h-screen">
+      <HeroSection />
+      <FilterSection />
+      <div className="flex max-w-screen-xl mx-auto pt-10 items-center gap-4">
         <div className="basis-1/3">
           <CarouselCard images={sample_images} title="Estate One" />
         </div>
@@ -45,7 +49,6 @@ const HomePage = () => {
           <CarouselCard images={sample_images} title="Estate Two" />
         </div>
       </div>
-      <div>{JSON.stringify(data)}</div>
     </div>
   );
 };

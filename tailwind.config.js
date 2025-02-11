@@ -18,7 +18,7 @@ export default {
       //     colors: {
       //       primary: "#7c3aed",
       //     },
-      //   },p
+      //   },
       //   dark: {
       //     colors: {
       //       primary: "#7c3aed",

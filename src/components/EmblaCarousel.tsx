@@ -194,7 +194,7 @@ const CarouselItem = React.forwardRef<
 CarouselItem.displayName = "CarouselItem";
 
 const CarouselPrevious = React.forwardRef<
-  HTMLButtonElement,
+  any,
   React.ComponentProps<typeof StyledButton>
 >(({ className, ...props }, ref) => {
   const { orientation, scrollPrev, canScrollPrev } = useCarousel();
@@ -214,7 +214,7 @@ const CarouselPrevious = React.forwardRef<
         !canScrollPrev ? "hidden group-hover:hidden" : ""
       )}
       disabled={!canScrollPrev}
-      onClick={scrollPrev}
+      onPress={scrollPrev}
       {...props}
     >
       <ChevronLeft className="h-4 w-4" />
@@ -225,7 +225,7 @@ const CarouselPrevious = React.forwardRef<
 CarouselPrevious.displayName = "CarouselPrevious";
 
 const CarouselNext = React.forwardRef<
-  HTMLButtonElement,
+  any,
   React.ComponentProps<typeof StyledButton>
 >(({ className, ...props }, ref) => {
   const { orientation, scrollNext, canScrollNext } = useCarousel();
@@ -245,7 +245,7 @@ const CarouselNext = React.forwardRef<
         !canScrollNext ? "hidden group-hover:hidden" : ""
       )}
       disabled={!canScrollNext}
-      onClick={scrollNext}
+      onPress={scrollNext}
       {...props}
     >
       <ChevronRight className="h-4 w-4" />
