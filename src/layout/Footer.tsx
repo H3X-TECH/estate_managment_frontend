@@ -3,7 +3,7 @@ import { Link } from "@heroui/react";
 export default function Footer() {
   return (
     <footer className="w-full bg-black text-white py-12">
-      <div className="max-w-screen-xl mx-auto flex items-start justify-between w-full h-full">
+      <div className="max-w-screen-xl px-4 mx-auto flex items-start justify-between w-full h-full">
         <div>
           <h4 className="text-lg">eainsharmal</h4>
           <p className="text-sm">Copyright &copy; 2025, All rights reserved</p>

@@ -41,7 +41,7 @@ const HomePage = () => {
     <div className="min-h-screen">
       <HeroSection />
       <FilterSection />
-      <div className="flex max-w-screen-xl mx-auto pt-10 items-center gap-4">
+      <div className="flex max-w-screen-xl px-4 mx-auto py-10 items-center gap-4">
         <div className="basis-1/3">
           <CarouselCard images={sample_images} title="Estate One" />
         </div>

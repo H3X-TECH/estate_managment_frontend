@@ -7,6 +7,7 @@ import SignUpPage from "~/features/auth/views/SignUpPage";
 import TestPage from "~/pages/test-page";
 import ForgotPasswordPage from "~/features/auth/views/ForgotPasswordPage";
 import ResetPasswordPage from "~/features/auth/views/ResetPasswordPage";
+import MainProfilePage from "~/features/profile/views/MainProfilePage";
 
 const routesList = [
   {
@@ -29,6 +30,10 @@ const routesList = [
       {
         path: "/search",
         element: <div>Search Page</div>,
+      },
+      {
+        path: "/profile",
+        element: <MainProfilePage />,
       },
     ],
   },

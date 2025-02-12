@@ -36,7 +36,7 @@ const HomePage = () => {
   console.log("tokens ", accessToken, refreshToken);
 
   return (
-    <div className="p-8">
+    <div className="py-8 bg-red-500">
       <div className="flex items-center gap-4">
         <div className="basis-1/3">
           <CarouselCard images={sample_images} title="Estate One" />
