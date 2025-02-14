@@ -26,7 +26,8 @@ const LoginForm = () => {
     },
   });
 
-  const { setIsLoggedIn, setAccessToken, setRefreshToken } = useAuthStore();
+  const { setIsLoggedIn, setAccessToken, setRefreshToken, setUserData } =
+    useAuthStore();
   const navigate = useNavigate();
 
   const login = useMutation({
@@ -37,6 +38,7 @@ const LoginForm = () => {
       console.log("success", resp);
       setAccessToken(resp.data.accessToken);
       setRefreshToken(resp.data.refreshToken);
+      setUserData(resp.data.user);
       setIsLoggedIn(true);
       navigate("/");
     },

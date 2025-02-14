@@ -10,6 +10,7 @@ interface AuthStore {
   setAccessToken: (accessToken: string) => void;
   setRefreshToken: (refreshToken: string) => void;
   setTokens: (accessToken: string, refreshToken: string) => void;
+  setUserData: (userData: unknown) => void;
   clearTokens: () => void;
 }
 
@@ -30,6 +31,11 @@ export const useAuthStore = create<AuthStore>()(
           isLoggedIn: false,
           accessToken: undefined,
           refreshToken: undefined,
+        });
+      },
+      setUserData: (data: unknown) => {
+        set({
+          userData: data,
         });
       },
     }),

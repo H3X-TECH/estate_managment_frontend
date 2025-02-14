@@ -27,7 +27,7 @@ axiosInstance.interceptors.response.use(
 );
 
 export const fetcher = async <P>(
-  method: "get" | "post" | "delete",
+  method: "get" | "post" | "delete" | "put" | "patch",
   url: string,
   payload?: P
 ) => {
