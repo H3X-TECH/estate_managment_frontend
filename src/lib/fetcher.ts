@@ -51,17 +51,29 @@ export const fetcher = async <P>(
     if (err.response?.status === 401) {
       // const refreshToken = localStorage.getItem("refresh_token");
       const refreshToken = useAuthStore.getState().refreshToken;
-      const resp = await axiosInstance({
-        method: "get",
-        url: "/auth/refresh-tokens",
-        headers: {
-          Authorization: `Bearer ${refreshToken}`,
-        },
-      });
-      useAuthStore.setState({
-        accessToken: resp?.data?.data?.accessToken,
-        refreshToken: resp?.data?.data?.refreshToken,
-      });
+      try {
+        const resp = await axiosInstance({
+          method: "get",
+          url: "/auth/refresh-tokens",
+          headers: {
+            Authorization: `Bearer ${refreshToken}`,
+          },
+        });
+        useAuthStore.setState({
+          accessToken: resp?.data?.data?.accessToken,
+          refreshToken: resp?.data?.data?.refreshToken,
+        });
+      } catch (refreshError) {
+        const refreshErr = refreshError as AxiosError;
+        if (refreshErr?.response?.status === 401) {
+          useAuthStore.setState({
+            isLoggedIn: false,
+            accessToken: undefined,
+            refreshToken: undefined,
+            userData: null,
+          });
+        }
+      }
     }
 
     if (!isAxiosError(err)) return;

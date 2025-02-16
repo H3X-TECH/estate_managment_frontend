@@ -8,15 +8,12 @@ import TestPage from "~/pages/test-page";
 import ForgotPasswordPage from "~/features/auth/views/ForgotPasswordPage";
 import ResetPasswordPage from "~/features/auth/views/ResetPasswordPage";
 import MainProfilePage from "~/features/profile/views/MainProfilePage";
+import AddListing from "~/features/sell/views/AddListing";
 
 const routesList = [
   {
     path: "/",
-    element: (
-      <ProtectedRoute>
-        <MainLayout />
-      </ProtectedRoute>
-    ),
+    element: <MainLayout />,
 
     children: [
       {
@@ -33,7 +30,15 @@ const routesList = [
       },
       {
         path: "/profile",
-        element: <MainProfilePage />,
+        element: (
+          <ProtectedRoute>
+            <MainProfilePage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/add-listing",
+        element: <AddListing />,
       },
     ],
   },

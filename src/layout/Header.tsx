@@ -25,6 +25,12 @@ export default function Header() {
           <NavLink to="/" className="hover:text-primary transition-colors">
             Explore
           </NavLink>
+          <NavLink
+            to="/add-listing"
+            className="hover:text-primary transition-colors"
+          >
+            Sell
+          </NavLink>
           <NavLink to="/" className="hover:text-primary transition-colors">
             Help
           </NavLink>
