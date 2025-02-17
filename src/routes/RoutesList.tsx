@@ -9,6 +9,7 @@ import ForgotPasswordPage from "~/features/auth/views/ForgotPasswordPage";
 import ResetPasswordPage from "~/features/auth/views/ResetPasswordPage";
 import MainProfilePage from "~/features/profile/views/MainProfilePage";
 import AddListing from "~/features/sell/views/AddListing";
+import GoogleRedirectView from "~/features/auth/views/GoogleRedirectView";
 
 const routesList = [
   {
@@ -63,6 +64,10 @@ const routesList = [
         element: <ResetPasswordPage />,
       },
     ],
+  },
+  {
+    path: "google/callback",
+    element: <GoogleRedirectView />,
   },
 ];
 

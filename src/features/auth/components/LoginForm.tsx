@@ -49,6 +49,10 @@ const LoginForm = () => {
     login.mutate(values);
   };
 
+  const handleGoogleLogin = () => {
+    window.location.href = "http://localhost:5000/auth/google";
+  };
+
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -85,16 +89,20 @@ const LoginForm = () => {
             <span className="text-sm">Or continue with</span>
             <Divider className="flex-1" />
           </div>
-          <StyledButton color="default" className="w-full">
+          <StyledButton
+            as={Link}
+            href="http://localhost:5000/auth/google"
+            color="default"
+            className="w-full"
+          >
             Google
           </StyledButton>
         </section>
       </form>
       <StyledButton
-        as={Link}
-        href="/auth/sign-up"
         variant="light"
         className="absolute text-black top-6 right-6"
+        onPress={handleGoogleLogin}
       >
         Sign up
       </StyledButton>

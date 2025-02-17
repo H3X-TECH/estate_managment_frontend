@@ -8,11 +8,18 @@ import {
 } from "@heroui/react";
 import { House } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useAuthStore } from "~/stores/auth";
 import { StyledButton } from "~/styled-components/StyledButton";
 
 export default function Header() {
   const isLoggedIn = true;
   const navigate = useNavigate();
+  const { clearTokens } = useAuthStore();
+
+  const handleLogout = () => {
+    clearTokens();
+    navigate("/auth/login");
+  };
 
   return (
     <header className="py-4 bg-neutral-100 border-b backdrop-blur-md px-4 flex items-center">
@@ -54,7 +61,9 @@ export default function Header() {
                 >
                   Profile
                 </DropdownItem>
-                <DropdownItem key="logout">Logout</DropdownItem>
+                <DropdownItem key="logout" onPress={handleLogout}>
+                  Logout
+                </DropdownItem>
               </DropdownMenu>
             </Dropdown>
           ) : (

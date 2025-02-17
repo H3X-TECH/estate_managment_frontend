@@ -25,10 +25,11 @@ export const useAuthStore = create<AuthStore>()(
       setAccessToken: (accessToken: string) => set(() => ({ accessToken })),
       setRefreshToken: (refreshToken: string) => set(() => ({ refreshToken })),
       setTokens: (accessToken: string, refreshToken: string) =>
-        set(() => ({ accessToken, refreshToken })),
+        set(() => ({ accessToken, refreshToken, isLoggedIn: true })),
       clearTokens: () => {
         set({
           isLoggedIn: false,
+          userData: undefined,
           accessToken: undefined,
           refreshToken: undefined,
         });
@@ -41,7 +42,7 @@ export const useAuthStore = create<AuthStore>()(
     }),
     {
       name: "auth-store",
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => sessionStorage),
     }
   )
 );
