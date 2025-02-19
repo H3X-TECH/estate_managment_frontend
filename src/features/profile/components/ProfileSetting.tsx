@@ -1,14 +1,10 @@
 import { Avatar, Input } from "@heroui/react";
 import { StyledButton } from "~/styled-components/StyledButton";
-import type { UserProfile } from "../models";
 import { z } from "zod";
 import { useUpdateUserProfile } from "../queries";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-type ProfileSettingProps = {
-  profileData?: UserProfile;
-};
+import { useAuthStore } from "~/stores/auth";
 
 const formSchema = z.object({
   firstName: z.string(),
@@ -20,9 +16,9 @@ const formSchema = z.object({
 
 type TFormSchema = z.infer<typeof formSchema>;
 
-export default function ProfileSetting({ profileData }: ProfileSettingProps) {
+export default function ProfileSetting() {
   const updateProfileMutation = useUpdateUserProfile();
-
+  const { userData, setUserData } = useAuthStore();
   const {
     control,
     handleSubmit,
@@ -33,17 +29,29 @@ export default function ProfileSetting({ profileData }: ProfileSettingProps) {
       keepDirtyValues: true,
     },
     values: {
-      firstName: profileData?.firstName ?? "",
-      lastName: profileData?.lastName ?? "",
-      preferName: profileData?.preferName ?? "",
-      location: profileData?.location ?? "",
-      phoneNumber: profileData?.phoneNumber ?? "",
+      firstName: userData?.firstName ?? "",
+      lastName: userData?.lastName ?? "",
+      preferName: userData?.preferName ?? "",
+      location: userData?.location ?? "",
+      phoneNumber: userData?.phoneNumber ?? "",
     },
   });
 
   const onFormSubmit = (formData: TFormSchema) => {
     console.log(formData);
-    updateProfileMutation.mutate({ ...formData, code: null });
+    updateProfileMutation.mutate(
+      { ...formData, code: null },
+      {
+        onSuccess: () => {
+          if (userData) {
+            setUserData({
+              ...userData,
+              ...formData,
+            });
+          }
+        },
+      }
+    );
   };
 
   return (
@@ -53,7 +61,7 @@ export default function ProfileSetting({ profileData }: ProfileSettingProps) {
           <Avatar size="lg" name="H" color="primary" isBordered />
           <div>
             <h4 className="text-xl font-semibold">
-              {profileData?.firstName} {profileData?.lastName}
+              {userData?.firstName} {userData?.lastName}
             </h4>
             <h4 className="text-xl">Landlord</h4>
           </div>
@@ -62,7 +70,7 @@ export default function ProfileSetting({ profileData }: ProfileSettingProps) {
           <div className="w-full">
             <h4 className="text-lg text-primary font-medium">Email Address</h4>
             <div className="flex items-center gap-2">
-              <span className="text-lg">{profileData?.account.email}</span>
+              <span className="text-lg">{userData?.email}</span>
               <StyledButton variant="flat" color="primary" size="sm">
                 Edit
               </StyledButton>

@@ -18,13 +18,10 @@ export const useUpdateUserProfile = () => {
   const { userData } = useAuthStore();
   return useMutation({
     mutationFn: (data: UpdateUserProfilePayload) => {
-      return updateUserProfile(
-        (userData as Record<string, string>)?.id as string,
-        data
-      );
+      return updateUserProfile(userData?.accountId as string, data);
     },
     onSuccess: () => {
-      queryClient.refetchQueries({ queryKey: ["/profile"] });
+      queryClient.refetchQueries({ queryKey: ["/user-profile"] });
     },
   });
 };

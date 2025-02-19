@@ -33,7 +33,7 @@ export default function MainProfilePage() {
               }}
             />
           ) : (
-            <ProfileSetting profileData={data?.data} />
+            <ProfileSetting />
           )}
         </Tab>
         <Tab key="account" title="Account Details">

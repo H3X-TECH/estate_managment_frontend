@@ -26,8 +26,7 @@ const LoginForm = () => {
     },
   });
 
-  const { setIsLoggedIn, setAccessToken, setRefreshToken, setUserData } =
-    useAuthStore();
+  const { setIsLoggedIn, setAccessToken, setRefreshToken } = useAuthStore();
   const navigate = useNavigate();
 
   const login = useMutation({
@@ -38,7 +37,7 @@ const LoginForm = () => {
       console.log("success", resp);
       setAccessToken(resp.data.accessToken);
       setRefreshToken(resp.data.refreshToken);
-      setUserData(resp.data.user);
+      // setUserData(resp.data.user);
       setIsLoggedIn(true);
       navigate("/");
     },
@@ -102,7 +101,7 @@ const LoginForm = () => {
       <StyledButton
         variant="light"
         className="absolute text-black top-6 right-6"
-        onPress={handleGoogleLogin}
+        onPress={() => navigate("/auth/sign-up")}
       >
         Sign up
       </StyledButton>

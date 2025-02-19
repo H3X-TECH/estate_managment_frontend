@@ -8,9 +8,21 @@ import {
   Switch,
   Textarea,
 } from "@heroui/react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import FileUploader from "~/components/FileUploader";
+import { useGetAllAmenities } from "~/queries/setup-queries";
 import { StyledButton } from "~/styled-components/StyledButton";
+import {
+  parseDate,
+  getLocalTimeZone,
+  parseZonedDateTime,
+  parseAbsolute,
+} from "@internationalized/date";
+import { useCreateNewProperty } from "../queries";
+import { useAuthStore } from "~/stores/auth";
+import { toast } from "sonner";
 
 const PROPERTY_TYPES = [
   { value: "HOUSE", label: "House" },
@@ -23,53 +35,129 @@ const PROPERTY_TYPES = [
   },
 ];
 
-const AMENITIES = [
-  {
-    value: "air_conditioning",
-    label: "Air Conditioning",
-  },
-  {
-    value: "balcony",
-    label: "Balcony",
-  },
-  {
-    value: "dishwasher",
-    label: "Dishwasher",
-  },
-  {
-    value: "elevator",
-    label: "Elevator",
-  },
-];
+// const AMENITIES = [
+//   {
+//     value: "air_conditioning",
+//     label: "Air Conditioning",
+//   },
+//   {
+//     value: "balcony",
+//     label: "Balcony",
+//   },
+//   {
+//     value: "dishwasher",
+//     label: "Dishwasher",
+//   },
+//   {
+//     value: "elevator",
+//     label: "Elevator",
+//   },
+// ];
 
 const formSchema = z
   .object({
-    listingType: z.string(),
+    // listingType: z.string(),
     title: z.string().min(4, "Title is required"),
     description: z.string().min(10, "Description is required"),
-    images: z
-      .array(
-        z.object({
-          fileName: z.string(),
-          filePath: z.string().url(),
-        })
-      )
-      .min(1),
+    rentPrice: z.string().min(4, "Rent price is required"),
+    sellPrice: z.string().min(4, "Sell price is required"),
+    propertyType: z.string().min(1, "Property type is required"),
+    address: z.string().min(4, "Address is required"),
+    availableDate: z.string().min(4, "Available date is required"),
+    totalArea: z.string().min(1, "Total area is required"),
+    bedrooms: z.string().min(1, "Bedrooms is required"),
+    bathrooms: z.string().min(1, "Bathrooms is required"),
+    latitude: z.string().min(1, "Latitude is required"),
+    longitude: z.string().min(1, "Longitude is required"),
+    amenities: z.array(z.string()).min(1, "Amenities is required"),
+    // images: z
+    //   .array(
+    //     z.object({
+    //       fileName: z.string(),
+    //       filePath: z.string().url(),
+    //     })
+    //   )
+    //   .min(1),
   })
   .required();
 
 type TFormSchema = z.infer<typeof formSchema>;
 
+// title: string;
+// description: string;
+// type: any;
+// location: string;
+// sellPrice: number;
+// rentPrice: number;
+// isSell: boolean;
+// availableDate: Date;
+// isPerMonth: boolean;
+// isPerYear: boolean;
+// userId: string;
+// bedRooms: number;
+// bathRooms: number;
+// totalBeds: number;
+// totalArea: number;
+// latitude: number;
+// longitude: number;
+// amenities: Array<number>;
+
 export default function AddListing() {
+  const { userData } = useAuthStore();
+  const allAmenitiesQuery = useGetAllAmenities();
+  const allAmenitiesList = allAmenitiesQuery.data?.data || [];
+  const createPropertyMutation = useCreateNewProperty();
+  const {
+    control,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<TFormSchema>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      listingType: "rent",
+      amenities: [],
+    },
+  });
+
+  const onSubmit = (formData: TFormSchema) => {
+    console.log(formData);
+    const payload = {
+      title: formData.title,
+      description: formData.description,
+      type: formData.propertyType,
+      location: formData.address,
+      sellPrice: Number.parseInt(formData.sellPrice),
+      rentPrice: Number.parseInt(formData.rentPrice),
+      isSell: false,
+      availableDate: new Date(formData.availableDate),
+      isPerMonth: true,
+      isPerYear: false,
+      userId: userData?.userId || "",
+      bedRooms: Number.parseInt(formData.bedrooms),
+      bathRooms: Number.parseInt(formData.bathrooms),
+      totalBeds: Number.parseInt(formData.bedrooms),
+      totalArea: Number.parseInt(formData.totalArea),
+      latitude: Number.parseFloat(formData.latitude),
+      longitude: Number.parseFloat(formData.longitude),
+      amenities: formData.amenities.map((amenity) => Number.parseInt(amenity)),
+      attachments: [],
+    };
+    createPropertyMutation.mutate(payload, {
+      onSuccess: () => toast.success("Property created successfully"),
+    });
+  };
+
+  console.log("form errors", errors);
   return (
     <div className="max-w-screen-lg mx-auto my-6 p-10 border rounded-lg">
       <h2 className="text-xl font-semibold mb-4">Listing Details</h2>
-      <form className="space-y-6">
-        <RadioGroup label="Listing Type" orientation="horizontal">
+      <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+        {/* <RadioGroup label="Listing Type" orientation="horizontal">
           <Radio value="rent">Rent</Radio>
           <Radio value="sale">Sale</Radio>
           <Radio value="rent/sale">Rent/Sale</Radio>
-        </RadioGroup>
+        </RadioGroup> */}
         <div className="grid grid-cols-12 gap-4">
           <Input
             label="Title"
@@ -77,6 +165,7 @@ export default function AddListing() {
             placeholder="Enter your title"
             className="col-span-12"
             variant="bordered"
+            {...register("title")}
           />
           <Textarea
             label="Description"
@@ -85,6 +174,7 @@ export default function AddListing() {
             className="col-span-12"
             variant="bordered"
             rows={6}
+            {...register("description")}
           />
           <Input
             label="Rent Price"
@@ -92,6 +182,7 @@ export default function AddListing() {
             placeholder="MMK"
             className="col-span-6"
             variant="bordered"
+            {...register("rentPrice")}
           />
           <Input
             label="Sell Price"
@@ -99,34 +190,54 @@ export default function AddListing() {
             placeholder="MMK"
             className="col-span-6"
             variant="bordered"
+            {...register("sellPrice")}
           />
-          <Select
-            label="Property Type"
-            labelPlacement="outside"
-            placeholder="Select property type"
-            variant="bordered"
-            className="col-span-6"
-          >
-            {PROPERTY_TYPES.map((type) => (
-              <SelectItem key={type.value} value={type.value}>
-                {type.label}
-              </SelectItem>
-            ))}
-          </Select>
+          <Controller
+            control={control}
+            name="propertyType"
+            render={({ field }) => (
+              <Select
+                label="Property Type"
+                labelPlacement="outside"
+                placeholder="Select property type"
+                variant="bordered"
+                className="col-span-6"
+                value={field.value}
+                onChange={field.onChange}
+              >
+                {PROPERTY_TYPES.map((type) => (
+                  <SelectItem key={type.value} value={type.value}>
+                    {type.label}
+                  </SelectItem>
+                ))}
+              </Select>
+            )}
+          />
           <Input
             label="Address"
             labelPlacement="outside"
             placeholder="Type address"
             className="col-span-6"
             variant="bordered"
+            {...register("address")}
           />
           <div className="col-span-6 flex items-end gap-2">
             <div className="flex-grow">
-              <DatePicker
-                variant="bordered"
-                label="Available Date"
-                labelPlacement="outside"
-                className="w-full"
+              <Controller
+                control={control}
+                name="availableDate"
+                render={({ field }) => (
+                  <DatePicker
+                    variant="bordered"
+                    label="Available Date"
+                    labelPlacement="outside"
+                    className="w-full"
+                    value={field.value ? parseDate(field.value) : null}
+                    onChange={(newVal) =>
+                      field.onChange(newVal ? newVal?.toString() : "")
+                    }
+                  />
+                )}
               />
             </div>
             <Switch defaultChecked className="flex-grow">
@@ -139,6 +250,7 @@ export default function AddListing() {
             placeholder="Enter total area"
             className="col-span-6"
             variant="bordered"
+            {...register("totalArea")}
           />
           <Input
             label="Number of Bedrooms"
@@ -146,6 +258,7 @@ export default function AddListing() {
             placeholder="Enter total bedrooms number"
             className="col-span-6"
             variant="bordered"
+            {...register("bedrooms")}
           />
           <Input
             label="Number of Bathrooms"
@@ -153,21 +266,49 @@ export default function AddListing() {
             placeholder="Enter total bathrooms number"
             className="col-span-6"
             variant="bordered"
+            {...register("bathrooms")}
           />
-          <Select
-            label="Amenities"
-            placeholder="Select amenities"
-            selectionMode="multiple"
+          <Input
+            label="Latitude"
             labelPlacement="outside"
+            placeholder="Enter latitude"
+            className="col-span-6"
             variant="bordered"
-            className="col-span-12"
-          >
-            {AMENITIES.map((amenity) => (
-              <SelectItem key={amenity.value} value={amenity.value}>
-                {amenity.label}
-              </SelectItem>
-            ))}
-          </Select>
+            {...register("latitude")}
+          />
+          <Input
+            label="Longitude"
+            labelPlacement="outside"
+            placeholder="Enter longitude"
+            className="col-span-6"
+            variant="bordered"
+            {...register("longitude")}
+          />
+          <Controller
+            control={control}
+            name="amenities"
+            render={({ field }) => (
+              <Select
+                label="Amenities"
+                placeholder="Select amenities"
+                selectionMode="multiple"
+                labelPlacement="outside"
+                variant="bordered"
+                className="col-span-12"
+                selectedKeys={field.value}
+                onChange={(e) => {
+                  console.log(e.target.value);
+                  field.onChange(e.target.value.split(","));
+                }}
+              >
+                {allAmenitiesList.map((amenity) => (
+                  <SelectItem key={amenity.amenityId} value={amenity.amenityId}>
+                    {amenity.name}
+                  </SelectItem>
+                ))}
+              </Select>
+            )}
+          />
           <div className="col-span-12 flex flex-col gap-2">
             <label className="text-sm">Property Images</label>
             <FileUploader />
@@ -175,7 +316,13 @@ export default function AddListing() {
         </div>
 
         <div className="w-full flex items-center justify-end">
-          <StyledButton size="lg">Save</StyledButton>
+          <StyledButton
+            size="lg"
+            type="submit"
+            isLoading={createPropertyMutation.isPending}
+          >
+            Save
+          </StyledButton>
         </div>
       </form>
     </div>
