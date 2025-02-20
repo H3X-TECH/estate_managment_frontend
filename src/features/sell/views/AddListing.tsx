@@ -1,5 +1,7 @@
 import {
+  Button,
   DatePicker,
+  Image,
   Input,
   Radio,
   RadioGroup,
@@ -14,15 +16,14 @@ import { z } from "zod";
 import FileUploader from "~/components/FileUploader";
 import { useGetAllAmenities } from "~/queries/setup-queries";
 import { StyledButton } from "~/styled-components/StyledButton";
-import {
-  parseDate,
-  getLocalTimeZone,
-  parseZonedDateTime,
-  parseAbsolute,
-} from "@internationalized/date";
+import { parseDate } from "@internationalized/date";
 import { useCreateNewProperty } from "../queries";
 import { useAuthStore } from "~/stores/auth";
 import { toast } from "sonner";
+import { uploadFile } from "~/lib/utils";
+import { useMutation } from "@tanstack/react-query";
+import { Trash2Icon } from "lucide-react";
+import LeafletMap from "~/components/LeafletMap";
 
 const PROPERTY_TYPES = [
   { value: "HOUSE", label: "House" },
@@ -35,49 +36,35 @@ const PROPERTY_TYPES = [
   },
 ];
 
-// const AMENITIES = [
-//   {
-//     value: "air_conditioning",
-//     label: "Air Conditioning",
-//   },
-//   {
-//     value: "balcony",
-//     label: "Balcony",
-//   },
-//   {
-//     value: "dishwasher",
-//     label: "Dishwasher",
-//   },
-//   {
-//     value: "elevator",
-//     label: "Elevator",
-//   },
-// ];
-
 const formSchema = z
   .object({
-    // listingType: z.string(),
-    title: z.string().min(4, "Title is required"),
-    description: z.string().min(10, "Description is required"),
+    listingType: z.string({ message: "Listing type is required" }),
+    title: z.string().min(8, "Title must be at least 8 characters"),
+    description: z
+      .string()
+      .min(10, "Description must be at least 10 characters"),
     rentPrice: z.string().min(4, "Rent price is required"),
     sellPrice: z.string().min(4, "Sell price is required"),
-    propertyType: z.string().min(1, "Property type is required"),
+    propertyType: z.string({ message: "Property type is required" }),
     address: z.string().min(4, "Address is required"),
-    availableDate: z.string().min(4, "Available date is required"),
+    availableDate: z
+      .string()
+      .min(4, "Available date is required")
+      .date("Invalid date"),
     totalArea: z.string().min(1, "Total area is required"),
     bedrooms: z.string().min(1, "Bedrooms is required"),
     bathrooms: z.string().min(1, "Bathrooms is required"),
     latitude: z.string().min(1, "Latitude is required"),
     longitude: z.string().min(1, "Longitude is required"),
-    amenities: z.array(z.string()).min(1, "Amenities is required"),
-    // images: z
-    //   .array(
-    //     z.object({
-    //       fileName: z.string(),
-    //       filePath: z.string().url(),
-    //     })
-    //   )
-    //   .min(1),
+    amenities: z.array(z.coerce.number()).min(1, "Amenities is required"),
+    images: z
+      .array(
+        z.object({
+          fileName: z.string(),
+          filePath: z.string().url(),
+        })
+      )
+      .min(1, "Images is required"),
   })
   .required();
 
@@ -111,14 +98,42 @@ export default function AddListing() {
     control,
     register,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm<TFormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       listingType: "rent",
       amenities: [],
+      images: [],
+      latitude: "",
+      longitude: "",
     },
   });
+
+  const imagesValue = watch("images");
+
+  const uploadFileMutation = useMutation({
+    mutationFn: (file: File) => {
+      return uploadFile(file);
+    },
+    onSuccess: () => toast.success("File uploaded successfully"),
+  });
+
+  const handleFileSelect = async (files: Array<File>) => {
+    const file = files[0];
+    try {
+      const resp = await uploadFileMutation.mutateAsync(file);
+      console.log(resp);
+      setValue("images", [
+        ...imagesValue,
+        { fileName: resp.fileName, filePath: resp.filePath },
+      ]);
+    } catch (err) {
+      console.log("Upload file error: ", err);
+    }
+  };
 
   const onSubmit = (formData: TFormSchema) => {
     console.log(formData);
@@ -140,7 +155,7 @@ export default function AddListing() {
       totalArea: Number.parseInt(formData.totalArea),
       latitude: Number.parseFloat(formData.latitude),
       longitude: Number.parseFloat(formData.longitude),
-      amenities: formData.amenities.map((amenity) => Number.parseInt(amenity)),
+      amenities: formData.amenities,
       attachments: [],
     };
     createPropertyMutation.mutate(payload, {
@@ -151,7 +166,9 @@ export default function AddListing() {
   console.log("form errors", errors);
   return (
     <div className="max-w-screen-lg mx-auto my-6 p-10 border rounded-lg">
-      <h2 className="text-xl font-semibold mb-4">Listing Details</h2>
+      <h2 className="text-xl font-semibold mb-4">
+        Add your property to listing
+      </h2>
       <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
         {/* <RadioGroup label="Listing Type" orientation="horizontal">
           <Radio value="rent">Rent</Radio>
@@ -173,7 +190,7 @@ export default function AddListing() {
             placeholder="Enter your description"
             className="col-span-12"
             variant="bordered"
-            rows={6}
+            minRows={8}
             {...register("description")}
           />
           <Input
@@ -234,7 +251,7 @@ export default function AddListing() {
                     className="w-full"
                     value={field.value ? parseDate(field.value) : null}
                     onChange={(newVal) =>
-                      field.onChange(newVal ? newVal?.toString() : "")
+                      field.onChange(newVal ? newVal.toString() : "")
                     }
                   />
                 )}
@@ -245,7 +262,7 @@ export default function AddListing() {
             </Switch>
           </div>
           <Input
-            label="Total Area"
+            label="Total Area (sqm)"
             labelPlacement="outside"
             placeholder="Enter total area"
             className="col-span-6"
@@ -268,22 +285,42 @@ export default function AddListing() {
             variant="bordered"
             {...register("bathrooms")}
           />
-          <Input
-            label="Latitude"
-            labelPlacement="outside"
-            placeholder="Enter latitude"
-            className="col-span-6"
-            variant="bordered"
-            {...register("latitude")}
+          <Controller
+            control={control}
+            name="latitude"
+            render={({ field }) => (
+              <Input
+                label="Latitude"
+                labelPlacement="outside"
+                placeholder="Enter latitude"
+                className="col-span-6"
+                variant="bordered"
+                {...field}
+              />
+            )}
           />
-          <Input
-            label="Longitude"
-            labelPlacement="outside"
-            placeholder="Enter longitude"
-            className="col-span-6"
-            variant="bordered"
-            {...register("longitude")}
+          <Controller
+            control={control}
+            name="longitude"
+            render={({ field }) => (
+              <Input
+                label="Longitude"
+                labelPlacement="outside"
+                placeholder="Enter longitude"
+                className="col-span-6"
+                variant="bordered"
+                {...field}
+              />
+            )}
           />
+          <div className="col-span-12 h-80">
+            <LeafletMap
+              onMarkerMove={(e: any) => {
+                setValue("latitude", Number(e.latlng.lat).toFixed(7));
+                setValue("longitude", Number(e.latlng.lng).toFixed(7));
+              }}
+            />
+          </div>
           <Controller
             control={control}
             name="amenities"
@@ -311,7 +348,35 @@ export default function AddListing() {
           />
           <div className="col-span-12 flex flex-col gap-2">
             <label className="text-sm">Property Images</label>
-            <FileUploader />
+            <FileUploader
+              onFileSelect={handleFileSelect}
+              isLoading={uploadFileMutation.isPending}
+            />
+            <div className="mt-2 flex items-center gap-2">
+              {imagesValue.map((img, indx) => (
+                <div key={indx} className="relative group">
+                  <Image
+                    src={img.filePath}
+                    alt={img.fileName}
+                    width={200}
+                    height={100}
+                    classNames={{
+                      wrapper: "border",
+                      img: "object-cover object-center",
+                    }}
+                  />
+                  <Button
+                    size="sm"
+                    isIconOnly
+                    variant="solid"
+                    color="danger"
+                    className="absolute bottom-2 right-2 z-20 hidden group-hover:flex"
+                  >
+                    <Trash2Icon />
+                  </Button>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 

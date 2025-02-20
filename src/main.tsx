@@ -37,6 +37,8 @@ const queryClient = new QueryClient({
   }),
 });
 
+console.log("import.meta", import.meta.env);
+
 createRoot(document.getElementById("root") as HTMLElement).render(
   <StrictMode>
     <BrowserRouter>

@@ -50,6 +50,7 @@ export const fetcher = async <P>(
     // assume access token expired and manually update it with refresh token
     if (err.response?.status === 401) {
       // const refreshToken = localStorage.getItem("refresh_token");
+      console.log("access token expired");
       const refreshToken = useAuthStore.getState().refreshToken;
       try {
         const resp = await axiosInstance({
@@ -66,6 +67,7 @@ export const fetcher = async <P>(
       } catch (refreshError) {
         const refreshErr = refreshError as AxiosError;
         if (refreshErr?.response?.status === 401) {
+          console.log("refresh token expired");
           useAuthStore.setState({
             isLoggedIn: false,
             accessToken: undefined,

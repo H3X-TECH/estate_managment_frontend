@@ -25,9 +25,8 @@ const useGetUserProfile = () => {
 };
 
 export default function Header() {
-  const isLoggedIn = true;
   const navigate = useNavigate();
-  const { userData, clearTokens, setUserData } = useAuthStore();
+  const { isLoggedIn, userData, clearTokens, setUserData } = useAuthStore();
   const { data } = useGetUserProfile();
 
   const handleLogout = () => {
@@ -36,7 +35,6 @@ export default function Header() {
   };
 
   useEffect(() => {
-    console.log("effect should run!");
     if (data?.data) {
       setUserData(data.data);
     }
@@ -46,7 +44,7 @@ export default function Header() {
     <header className="py-4 bg-neutral-100 border-b backdrop-blur-md px-4 flex items-center">
       <div className="max-w-screen-xl flex items-center w-full mx-auto">
         <div className="flex items-center">
-          <House />
+          {/* <House /> */}
           <h4 className="text-lg font-semibold tracking-wider">eainsharmal</h4>
         </div>
         <div className="flex items-center mx-auto gap-8">
@@ -73,7 +71,7 @@ export default function Header() {
           {isLoggedIn ? (
             <Dropdown>
               <DropdownTrigger>
-                <Avatar name={userData.avatarUrl || userData.firstName} />
+                <Avatar name={userData?.avatarUrl || userData?.firstName} />
               </DropdownTrigger>
               <DropdownMenu>
                 <DropdownItem

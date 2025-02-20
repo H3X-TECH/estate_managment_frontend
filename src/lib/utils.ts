@@ -18,14 +18,22 @@ export const customToast = {
 
 export const uploadFile = async (file: File) => {
   const { data, error } = await supabaseClient.storage
-    .from("attachments")
+    .from("property_attachments")
     .upload(file.name, file);
 
   if (error) {
     throw error;
   }
 
-  return data.fullPath;
+  const {
+    data: { publicUrl },
+  } = getFileUrl(data.path);
+
+  return {
+    fileName: file.name,
+    filePath: publicUrl,
+    fileKey: data.id,
+  };
 };
 
 export const getFileUrl = (
@@ -36,6 +44,6 @@ export const getFileUrl = (
   }
 ) => {
   return supabaseClient.storage
-    .from("attachments")
+    .from("property_attachments")
     .getPublicUrl(assetName, options);
 };

@@ -1,4 +1,4 @@
-import { Chip, Image } from "@heroui/react";
+import { Chip, Divider, Image } from "@heroui/react";
 import {
   Carousel,
   CarouselContent,
@@ -60,6 +60,7 @@ export default function PropertyCard({ title, images }: PropertyCardProps) {
                 <House size={18} />
                 <span className="text-sm font-medium">Condo</span>
               </div>
+              <Divider orientation="vertical" className="h-5" />
               <div className="flex items-center gap-1">
                 <Bed size={18} />
                 <span className="text-sm font-medium">2</span>
@@ -68,6 +69,7 @@ export default function PropertyCard({ title, images }: PropertyCardProps) {
                 <Bath size={18} />
                 <span className="text-sm font-medium">1</span>
               </div>
+              <Divider orientation="vertical" className="h-5" />
               <div className="flex items-center gap-1">
                 <SquareDashedBottom size={18} />
                 <span className="text-sm font-medium">1200 sqft</span>

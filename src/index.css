@@ -21,7 +21,7 @@
 }
 
 .leaflet-container {
-  height: 500px !important;
+  height: inherit !important;
 }
 
 .leaflet-control-attribution {
