@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { toast } from "sonner";
 import { twMerge } from "tailwind-merge";
 import supabaseClient from "./supabase";
+import { v4 as uuidv4 } from "uuid";
 
 export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
@@ -17,9 +18,10 @@ export const customToast = {
 };
 
 export const uploadFile = async (file: File) => {
+  const uniqueFileName = `${uuidv4()}_${file.name}`;
   const { data, error } = await supabaseClient.storage
     .from("property_attachments")
-    .upload(file.name, file);
+    .upload(uniqueFileName, file);
 
   if (error) {
     throw error;

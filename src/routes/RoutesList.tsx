@@ -4,7 +4,6 @@ import HomePage from "~/features/home/HomePage";
 import AuthLayout from "~/layout/AuthLayout";
 import LoginPage from "~/features/auth/views/LoginPage";
 import SignUpPage from "~/features/auth/views/SignUpPage";
-import TestPage from "~/pages/test-page";
 import ForgotPasswordPage from "~/features/auth/views/ForgotPasswordPage";
 import ResetPasswordPage from "~/features/auth/views/ResetPasswordPage";
 import MainProfilePage from "~/features/profile/views/MainProfilePage";
@@ -20,10 +19,6 @@ const routesList = [
       {
         index: true,
         element: <HomePage />,
-      },
-      {
-        path: "/test",
-        element: <TestPage />,
       },
       {
         path: "/search",

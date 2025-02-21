@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import Router from "./routes/Router";
+import RouterEntry from "./routes/RouterEntry";
 
 import {
   MutationCache,
@@ -37,14 +37,12 @@ const queryClient = new QueryClient({
   }),
 });
 
-console.log("import.meta", import.meta.env);
-
 createRoot(document.getElementById("root") as HTMLElement).render(
   <StrictMode>
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <Toaster position="top-center" richColors />
-        <Router />
+        <RouterEntry />
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </BrowserRouter>

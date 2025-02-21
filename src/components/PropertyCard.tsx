@@ -20,6 +20,7 @@ type PropertyCardProps = {
   title: string;
   images: Array<any>;
 };
+
 export default function PropertyCard({ title, images }: PropertyCardProps) {
   return (
     <div className="w-full cursor-pointer rounded-lg hover:shadow-lg transition-all overflow-hidden relative bg-stone-50 border group">
