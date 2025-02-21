@@ -20,8 +20,8 @@ export default function Header() {
   };
 
   return (
-    <header className="py-4 bg-neutral-100 border-b backdrop-blur-md px-4 flex items-center">
-      <div className="max-w-screen-xl flex items-center w-full mx-auto">
+    <header className="bg-neutral-100 border-b backdrop-blur-md flex items-center">
+      <div className="max-w-screen-xl px-4 py-2 flex items-center w-full mx-auto">
         <div className="flex items-center">
           {/* <House /> */}
           <h4 className="text-lg font-semibold tracking-wider">eainsharmal</h4>

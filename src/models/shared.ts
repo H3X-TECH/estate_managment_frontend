@@ -38,4 +38,19 @@ interface Property {
   }>;
 }
 
-export type { ApiResponse, Property };
+interface UserProfile {
+  userId: string;
+  accountId: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  preferName: string;
+  phoneNumber: string;
+  avatarUrl: string;
+  location: string;
+  role: string;
+  isBlocked: boolean;
+  createdAt: Date;
+}
+
+export type { ApiResponse, Property, UserProfile };

@@ -1,13 +1,11 @@
 import {
   Button,
   DatePicker,
+  Divider,
   Image,
   Input,
-  Radio,
-  RadioGroup,
   Select,
   SelectItem,
-  Switch,
   Textarea,
 } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -163,233 +161,270 @@ export default function AddListing() {
     });
   };
 
-  console.log("form errors", errors);
   return (
-    <div className="max-w-screen-lg mx-auto my-6 p-10 border rounded-lg">
-      <h2 className="text-xl font-semibold mb-4">
-        Add your property to listing
-      </h2>
-      <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-        {/* <RadioGroup label="Listing Type" orientation="horizontal">
-          <Radio value="rent">Rent</Radio>
-          <Radio value="sale">Sale</Radio>
-          <Radio value="rent/sale">Rent/Sale</Radio>
-        </RadioGroup> */}
-        <div className="grid grid-cols-12 gap-4">
-          <Input
-            label="Title"
-            labelPlacement="outside"
-            placeholder="Enter your title"
-            className="col-span-12"
-            variant="bordered"
-            {...register("title")}
-          />
-          <Textarea
-            label="Description"
-            labelPlacement="outside"
-            placeholder="Enter your description"
-            className="col-span-12"
-            variant="bordered"
-            minRows={8}
-            {...register("description")}
-          />
-          <Input
-            label="Rent Price"
-            labelPlacement="outside"
-            placeholder="MMK"
-            className="col-span-6"
-            variant="bordered"
-            {...register("rentPrice")}
-          />
-          <Input
-            label="Sell Price"
-            labelPlacement="outside"
-            placeholder="MMK"
-            className="col-span-6"
-            variant="bordered"
-            {...register("sellPrice")}
-          />
-          <Controller
-            control={control}
-            name="propertyType"
-            render={({ field }) => (
-              <Select
-                label="Property Type"
+    <section className="max-w-screen-xl grid grid-cols-12 gap-4 mx-auto my-6">
+      <div className="col-span-9">
+        <div className="mb-4">
+          <h2 className="text-xl font-semibold">
+            Add your property to listing
+          </h2>
+          <p className="text-content3-foreground">
+            Let us know more about your property.
+          </p>
+        </div>
+        <div className="p-6 border-1.5 rounded-lg">
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <h4 className="text-lg font-medium mb-4">Basic Info</h4>
+            {/* 
+                <RadioGroup label="Listing Type" orientation="horizontal">
+                  <Radio value="rent">Rent</Radio>
+                  <Radio value="sale">Sale</Radio>
+                  <Radio value="rent/sale">Rent/Sale</Radio>
+                </RadioGroup> 
+            */}
+            <div className="grid grid-cols-12 gap-6">
+              <Input
+                label="Title"
                 labelPlacement="outside"
-                placeholder="Select property type"
+                placeholder="Enter your title"
+                className="col-span-12"
                 variant="bordered"
-                className="col-span-6"
-                value={field.value}
-                onChange={field.onChange}
-              >
-                {PROPERTY_TYPES.map((type) => (
-                  <SelectItem key={type.value} value={type.value}>
-                    {type.label}
-                  </SelectItem>
-                ))}
-              </Select>
-            )}
-          />
-          <Input
-            label="Address"
-            labelPlacement="outside"
-            placeholder="Type address"
-            className="col-span-6"
-            variant="bordered"
-            {...register("address")}
-          />
-          <div className="col-span-6 flex items-end gap-2">
-            <div className="flex-grow">
+                {...register("title")}
+              />
               <Controller
                 control={control}
-                name="availableDate"
+                name="propertyType"
                 render={({ field }) => (
-                  <DatePicker
-                    variant="bordered"
-                    label="Available Date"
+                  <Select
+                    label="Property Type"
                     labelPlacement="outside"
-                    className="w-full"
-                    value={field.value ? parseDate(field.value) : null}
-                    onChange={(newVal) =>
-                      field.onChange(newVal ? newVal.toString() : "")
-                    }
+                    placeholder="Select property type"
+                    variant="bordered"
+                    className="col-span-6"
+                    value={field.value}
+                    onChange={field.onChange}
+                  >
+                    {PROPERTY_TYPES.map((type) => (
+                      <SelectItem key={type.value}>{type.label}</SelectItem>
+                    ))}
+                  </Select>
+                )}
+              />
+              <Input
+                label="Address"
+                labelPlacement="outside"
+                placeholder="Type address"
+                className="col-span-6"
+                variant="bordered"
+                {...register("address")}
+              />
+              <Controller
+                control={control}
+                name="latitude"
+                render={({ field }) => (
+                  <Input
+                    label="Latitude"
+                    labelPlacement="outside"
+                    placeholder="Enter latitude"
+                    className="col-span-6"
+                    variant="bordered"
+                    {...field}
                   />
                 )}
               />
-            </div>
-            <Switch defaultChecked className="flex-grow">
-              <span className="text-sm">Available Now</span>
-            </Switch>
-          </div>
-          <Input
-            label="Total Area (sqm)"
-            labelPlacement="outside"
-            placeholder="Enter total area"
-            className="col-span-6"
-            variant="bordered"
-            {...register("totalArea")}
-          />
-          <Input
-            label="Number of Bedrooms"
-            labelPlacement="outside"
-            placeholder="Enter total bedrooms number"
-            className="col-span-6"
-            variant="bordered"
-            {...register("bedrooms")}
-          />
-          <Input
-            label="Number of Bathrooms"
-            labelPlacement="outside"
-            placeholder="Enter total bathrooms number"
-            className="col-span-6"
-            variant="bordered"
-            {...register("bathrooms")}
-          />
-          <Controller
-            control={control}
-            name="latitude"
-            render={({ field }) => (
-              <Input
-                label="Latitude"
-                labelPlacement="outside"
-                placeholder="Enter latitude"
-                className="col-span-6"
-                variant="bordered"
-                {...field}
-              />
-            )}
-          />
-          <Controller
-            control={control}
-            name="longitude"
-            render={({ field }) => (
-              <Input
-                label="Longitude"
-                labelPlacement="outside"
-                placeholder="Enter longitude"
-                className="col-span-6"
-                variant="bordered"
-                {...field}
-              />
-            )}
-          />
-          <div className="col-span-12 h-80">
-            <LeafletMap
-              onMarkerMove={(e: any) => {
-                setValue("latitude", Number(e.latlng.lat).toFixed(7));
-                setValue("longitude", Number(e.latlng.lng).toFixed(7));
-              }}
-            />
-          </div>
-          <Controller
-            control={control}
-            name="amenities"
-            render={({ field }) => (
-              <Select
-                label="Amenities"
-                placeholder="Select amenities"
-                selectionMode="multiple"
-                labelPlacement="outside"
-                variant="bordered"
-                className="col-span-12"
-                selectedKeys={field.value}
-                onChange={(e) => {
-                  console.log(e.target.value);
-                  field.onChange(e.target.value.split(","));
-                }}
-              >
-                {allAmenitiesList.map((amenity) => (
-                  <SelectItem key={amenity.amenityId} value={amenity.amenityId}>
-                    {amenity.name}
-                  </SelectItem>
-                ))}
-              </Select>
-            )}
-          />
-          <div className="col-span-12 flex flex-col gap-2">
-            <label className="text-sm">Property Images</label>
-            <FileUploader
-              onFileSelect={handleFileSelect}
-              isLoading={uploadFileMutation.isPending}
-            />
-            <div className="mt-2 flex items-center gap-2">
-              {imagesValue.map((img, indx) => (
-                <div key={indx} className="relative group">
-                  <Image
-                    src={img.filePath}
-                    alt={img.fileName}
-                    width={200}
-                    height={100}
-                    classNames={{
-                      wrapper: "border",
-                      img: "object-cover object-center",
-                    }}
+              <Controller
+                control={control}
+                name="longitude"
+                render={({ field }) => (
+                  <Input
+                    label="Longitude"
+                    labelPlacement="outside"
+                    placeholder="Enter longitude"
+                    className="col-span-6"
+                    variant="bordered"
+                    {...field}
                   />
-                  <Button
-                    size="sm"
-                    isIconOnly
-                    variant="solid"
-                    color="danger"
-                    className="absolute bottom-2 right-2 z-20 hidden group-hover:flex"
-                  >
-                    <Trash2Icon />
-                  </Button>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+                )}
+              />
+              <div className="col-span-12 h-80">
+                <LeafletMap
+                  onMarkerMove={(e: any) => {
+                    setValue("latitude", Number(e.latlng.lat).toFixed(7));
+                    setValue("longitude", Number(e.latlng.lng).toFixed(7));
+                  }}
+                />
+              </div>
 
-        <div className="w-full flex items-center justify-end">
-          <StyledButton
-            size="lg"
-            type="submit"
-            isLoading={createPropertyMutation.isPending}
-          >
-            Save
-          </StyledButton>
+              <Input
+                label="Rent Price"
+                labelPlacement="outside"
+                placeholder="MMK"
+                className="col-span-6"
+                variant="bordered"
+                {...register("rentPrice")}
+              />
+              <Input
+                label="Sell Price"
+                labelPlacement="outside"
+                placeholder="MMK"
+                className="col-span-6"
+                variant="bordered"
+                {...register("sellPrice")}
+              />
+            </div>
+            <Divider className="mt-8 mb-4" />
+            <h4 className="col-span-12 text-lg mb-4 font-medium">
+              Additional Details
+            </h4>
+            <div className="grid grid-cols-12 gap-6">
+              <Textarea
+                label="Description"
+                labelPlacement="outside"
+                placeholder="Enter your description"
+                className="col-span-12"
+                variant="bordered"
+                minRows={8}
+                {...register("description")}
+              />
+
+              <Input
+                label="Number of Bedrooms"
+                labelPlacement="outside"
+                placeholder="Enter total bedrooms number"
+                className="col-span-6"
+                variant="bordered"
+                {...register("bedrooms")}
+              />
+              <Input
+                label="Number of Bathrooms"
+                labelPlacement="outside"
+                placeholder="Enter total bathrooms number"
+                className="col-span-6"
+                variant="bordered"
+                {...register("bathrooms")}
+              />
+              <div className="col-span-6 flex items-end gap-2">
+                <div className="flex-grow">
+                  <Controller
+                    control={control}
+                    name="availableDate"
+                    render={({ field }) => (
+                      <DatePicker
+                        variant="bordered"
+                        label="Available Date"
+                        labelPlacement="outside"
+                        className="w-full"
+                        // @ts-ignore
+                        value={field.value ? parseDate(field.value) : null}
+                        onChange={(newVal) =>
+                          field.onChange(newVal ? newVal.toString() : "")
+                        }
+                      />
+                    )}
+                  />
+                </div>
+                {/* <Switch defaultChecked className="flex-grow">
+                <span className="text-sm">Available Now</span>
+              </Switch> */}
+              </div>
+              <Input
+                label="Total Area (sqft)"
+                labelPlacement="outside"
+                placeholder="Enter total area"
+                className="col-span-6"
+                variant="bordered"
+                {...register("totalArea")}
+              />
+              <Controller
+                control={control}
+                name="amenities"
+                render={({ field }) => (
+                  <Select
+                    label="Amenities"
+                    placeholder="Select amenities"
+                    selectionMode="multiple"
+                    labelPlacement="outside"
+                    variant="bordered"
+                    className="col-span-12"
+                    selectedKeys={field.value}
+                    onChange={(e) => {
+                      console.log(e.target.value);
+                      field.onChange(e.target.value.split(","));
+                    }}
+                  >
+                    {allAmenitiesList.map((amenity) => (
+                      <SelectItem
+                        key={amenity.amenityId}
+                        textValue={amenity.amenityId}
+                      >
+                        {amenity.name}
+                      </SelectItem>
+                    ))}
+                  </Select>
+                )}
+              />
+              <div className="col-span-12 flex flex-col gap-2">
+                <label className="text-sm">Property Images</label>
+                <FileUploader
+                  onFileSelect={handleFileSelect}
+                  isLoading={uploadFileMutation.isPending}
+                />
+                <div className="mt-2 flex items-center gap-2">
+                  {imagesValue.map((img, indx) => (
+                    <div key={indx} className="relative group">
+                      <Image
+                        src={img.filePath}
+                        alt={img.fileName}
+                        width={200}
+                        height={100}
+                        classNames={{
+                          wrapper: "border",
+                          img: "object-cover object-center",
+                        }}
+                      />
+                      <Button
+                        size="sm"
+                        isIconOnly
+                        variant="solid"
+                        color="danger"
+                        className="absolute bottom-2 right-2 z-20 hidden group-hover:flex"
+                      >
+                        <Trash2Icon />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="w-full flex items-center justify-end">
+              <StyledButton
+                size="lg"
+                type="submit"
+                isLoading={createPropertyMutation.isPending}
+              >
+                Save
+              </StyledButton>
+            </div>
+          </form>
         </div>
-      </form>
-    </div>
+      </div>
+      <div className="p-4 border-1.5 space-y-4 sticky top-2 shadow-sm col-span-3 rounded-md max-h-min">
+        <h2 className="text-xl font-semibold">Need help?</h2>
+        <Divider />
+        <p className="text-content3-foreground">
+          We will be more than happy to assist you in filling the form. Please
+          contact our support team
+        </p>
+        <div>
+          <h6 className="font-semibold">Opening Hours</h6>
+          <p className="text-content3-foreground">Monday - Friday: 9am - 5pm</p>
+        </div>
+        <div>
+          <p className="font-semibold">justaplaceholder@mail.to</p>
+          <p className="font-semibold">+95912345568</p>
+        </div>
+      </div>
+    </section>
   );
 }

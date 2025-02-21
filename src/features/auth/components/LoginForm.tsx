@@ -3,7 +3,7 @@ import { StyledButton } from "~/styled-components/StyledButton";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { useAuthStore } from "~/stores/auth";
 import { loginUser } from "../services";
@@ -25,6 +25,7 @@ const LoginForm = () => {
       password: "",
     },
   });
+  const queryClient = useQueryClient();
 
   const { setIsLoggedIn, setAccessToken, setRefreshToken } = useAuthStore();
   const navigate = useNavigate();
@@ -37,8 +38,8 @@ const LoginForm = () => {
       console.log("success", resp);
       setAccessToken(resp.data.accessToken);
       setRefreshToken(resp.data.refreshToken);
-      // setUserData(resp.data.user);
       setIsLoggedIn(true);
+      queryClient.refetchQueries({ queryKey: ["user-profile"] });
       navigate("/");
     },
   });

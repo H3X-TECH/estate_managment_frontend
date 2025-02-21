@@ -11,6 +11,12 @@
   }
 }
 
+@layer components {
+  .wrapper {
+    @apply max-w-screen-xl px-4 md:px-8 xl:px-0 mx-auto;
+  }
+}
+
 .banner-font {
   font-family: "Abril Fatface", serif;
 }
