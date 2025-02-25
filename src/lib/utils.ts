@@ -32,7 +32,7 @@ export const uploadFile = async (file: File) => {
   } = getFileUrl(data.path);
 
   return {
-    fileName: file.name,
+    fileName: uniqueFileName,
     filePath: publicUrl,
     fileKey: data.id,
   };
@@ -48,4 +48,8 @@ export const getFileUrl = (
   return supabaseClient.storage
     .from("property_attachments")
     .getPublicUrl(assetName, options);
+};
+
+export const removeFile = (filePath: string) => {
+  return supabaseClient.storage.from("property_attachments").remove([filePath]);
 };

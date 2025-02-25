@@ -80,7 +80,7 @@ export default function ProfileSetting() {
         <div className="col-span-6">
           <div className="w-full h-full flex items-center">
             <StyledButton variant="flat" color="primary">
-              Change Pasword
+              Change Password
             </StyledButton>
           </div>
         </div>

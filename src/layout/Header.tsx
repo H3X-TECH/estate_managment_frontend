@@ -50,7 +50,13 @@ export default function Header() {
           {isLoggedIn ? (
             <Dropdown>
               <DropdownTrigger>
-                <Avatar name={userData?.avatarUrl || userData?.firstName} />
+                <Avatar
+                  name={
+                    userData?.avatarUrl ||
+                    userData?.firstName.slice(0, 2).toLocaleUpperCase()
+                  }
+                  color="primary"
+                />
               </DropdownTrigger>
               <DropdownMenu>
                 <DropdownItem

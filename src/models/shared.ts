@@ -5,6 +5,13 @@ interface ApiResponse<TData> {
   timestamp: number;
 }
 
+type PagingResponse<TData> = {
+  list: Array<TData>;
+  page: number;
+  limit: number;
+  totalCount: number;
+};
+
 interface Property {
   id: string;
   title: string;
@@ -53,4 +60,4 @@ interface UserProfile {
   createdAt: Date;
 }
 
-export type { ApiResponse, Property, UserProfile };
+export type { ApiResponse, Property, UserProfile, PagingResponse };

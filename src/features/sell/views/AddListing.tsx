@@ -18,21 +18,19 @@ import { parseDate } from "@internationalized/date";
 import { useCreateNewProperty } from "../queries";
 import { useAuthStore } from "~/stores/auth";
 import { toast } from "sonner";
-import { uploadFile } from "~/lib/utils";
+import { removeFile, uploadFile } from "~/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { Trash2Icon } from "lucide-react";
 import LeafletMap from "~/components/LeafletMap";
-
-const PROPERTY_TYPES = [
-  { value: "HOUSE", label: "House" },
-  { value: "APARTMENT", label: "Apartment" },
-  { value: "CONDO", label: "Land" },
-  { value: "OFFICE", label: "Commercial" },
-  {
-    value: "OTHER",
-    label: "Other",
-  },
-];
+import {
+  PRICE_UNITS,
+  PRICE_UNITS_ENUM,
+  PROPERTY_TYPES,
+  PROPERTY_TYPES_ENUM,
+  RENT_PRICING_TYPES,
+  RENT_PRICNG_TYPES_ENUM,
+} from "~/config/constants";
+import { CreatePropertyPayload } from "~/models/property";
 
 const formSchema = z
   .object({
@@ -43,7 +41,14 @@ const formSchema = z
       .min(10, "Description must be at least 10 characters"),
     rentPrice: z.string().min(4, "Rent price is required"),
     sellPrice: z.string().min(4, "Sell price is required"),
-    propertyType: z.string({ message: "Property type is required" }),
+    // propertyType: z.string({ message: "Property type is required" }),
+    propertyType: z.enum(PROPERTY_TYPES_ENUM, {
+      message: "Property type is required",
+    }),
+    priceUnit: z.enum(PRICE_UNITS_ENUM, { message: "Price unit is required" }),
+    pricingType: z.enum(RENT_PRICNG_TYPES_ENUM, {
+      message: "Pricing type is required",
+    }),
     address: z.string().min(4, "Address is required"),
     availableDate: z
       .string()
@@ -67,25 +72,6 @@ const formSchema = z
   .required();
 
 type TFormSchema = z.infer<typeof formSchema>;
-
-// title: string;
-// description: string;
-// type: any;
-// location: string;
-// sellPrice: number;
-// rentPrice: number;
-// isSell: boolean;
-// availableDate: Date;
-// isPerMonth: boolean;
-// isPerYear: boolean;
-// userId: string;
-// bedRooms: number;
-// bathRooms: number;
-// totalBeds: number;
-// totalArea: number;
-// latitude: number;
-// longitude: number;
-// amenities: Array<number>;
 
 export default function AddListing() {
   const { userData } = useAuthStore();
@@ -119,6 +105,22 @@ export default function AddListing() {
     onSuccess: () => toast.success("File uploaded successfully"),
   });
 
+  const removeFileMutation = useMutation({
+    mutationFn: (fileName: string) => {
+      return removeFile(fileName);
+    },
+    onSuccess: (resp) => {
+      const fileName = resp.data?.[0].name;
+      console.log("deleted file: ", resp.data);
+      const newImages = imagesValue.filter((img) => img.fileName !== fileName);
+      setValue("images", newImages);
+      toast.success("File removed successfully");
+    },
+    onError: (err) => {
+      console.log("Remove file error: ", err);
+    },
+  });
+
   const handleFileSelect = async (files: Array<File>) => {
     const file = files[0];
     try {
@@ -135,26 +137,24 @@ export default function AddListing() {
 
   const onSubmit = (formData: TFormSchema) => {
     console.log(formData);
-    const payload = {
+    const payload: CreatePropertyPayload = {
+      userId: userData?.userId || "",
       title: formData.title,
       description: formData.description,
       type: formData.propertyType,
+      priceUnit: formData.priceUnit,
+      rentPricing: formData.pricingType,
       location: formData.address,
       sellPrice: Number.parseInt(formData.sellPrice),
       rentPrice: Number.parseInt(formData.rentPrice),
-      isSell: false,
       availableDate: new Date(formData.availableDate),
-      isPerMonth: true,
-      isPerYear: false,
-      userId: userData?.userId || "",
       bedRooms: Number.parseInt(formData.bedrooms),
       bathRooms: Number.parseInt(formData.bathrooms),
-      totalBeds: Number.parseInt(formData.bedrooms),
       totalArea: Number.parseInt(formData.totalArea),
       latitude: Number.parseFloat(formData.latitude),
       longitude: Number.parseFloat(formData.longitude),
       amenities: formData.amenities,
-      attachments: [],
+      attachments: formData.images,
     };
     createPropertyMutation.mutate(payload, {
       onSuccess: () => toast.success("Property created successfully"),
@@ -255,21 +255,59 @@ export default function AddListing() {
                 />
               </div>
 
-              <Input
+              {/* <Input
                 label="Rent Price"
                 labelPlacement="outside"
                 placeholder="MMK"
                 className="col-span-6"
                 variant="bordered"
                 {...register("rentPrice")}
-              />
+              /> */}
               <Input
-                label="Sell Price"
+                label="Rent Price"
                 labelPlacement="outside"
                 placeholder="MMK"
-                className="col-span-6"
+                className="col-span-4"
                 variant="bordered"
                 {...register("sellPrice")}
+              />
+              <Controller
+                control={control}
+                name="priceUnit"
+                render={({ field }) => (
+                  <Select
+                    label="Price Unit"
+                    placeholder="Select price unit"
+                    labelPlacement="outside"
+                    variant="bordered"
+                    className="col-span-4"
+                    {...field}
+                  >
+                    {PRICE_UNITS.map((priceUnit) => (
+                      <SelectItem key={priceUnit.value}>
+                        {priceUnit.label}
+                      </SelectItem>
+                    ))}
+                  </Select>
+                )}
+              />
+              <Controller
+                control={control}
+                name="pricingType"
+                render={({ field }) => (
+                  <Select
+                    label="Pricing Type"
+                    placeholder="Select pricing type"
+                    labelPlacement="outside"
+                    variant="bordered"
+                    className="col-span-4"
+                    {...field}
+                  >
+                    {RENT_PRICING_TYPES.map((rpt) => (
+                      <SelectItem key={rpt.value}>{rpt.label}</SelectItem>
+                    ))}
+                  </Select>
+                )}
               />
             </div>
             <Divider className="mt-8 mb-4" />
@@ -286,7 +324,6 @@ export default function AddListing() {
                 minRows={8}
                 {...register("description")}
               />
-
               <Input
                 label="Number of Bedrooms"
                 labelPlacement="outside"
@@ -353,10 +390,7 @@ export default function AddListing() {
                     }}
                   >
                     {allAmenitiesList.map((amenity) => (
-                      <SelectItem
-                        key={amenity.amenityId}
-                        textValue={amenity.amenityId}
-                      >
+                      <SelectItem key={amenity.amenityId}>
                         {amenity.name}
                       </SelectItem>
                     ))}
@@ -387,7 +421,9 @@ export default function AddListing() {
                         isIconOnly
                         variant="solid"
                         color="danger"
-                        className="absolute bottom-2 right-2 z-20 hidden group-hover:flex"
+                        className="absolute bottom-2 right-2 z-20"
+                        isLoading={removeFileMutation.isPending}
+                        onPress={() => removeFileMutation.mutate(img.fileName)}
                       >
                         <Trash2Icon />
                       </Button>

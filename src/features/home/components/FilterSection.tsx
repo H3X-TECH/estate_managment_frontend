@@ -10,35 +10,33 @@ const propertyTypes = [
 
 export default function FilterSection() {
   return (
-    <div className="w-9/12 mx-auto p-4 max-w-screen-lg bg-stone-50 rounded-lg border -mt-[74px]">
+    <div className="w-9/12 mx-auto p-4 max-w-screen-lg bg-stone-300/80 rounded-lg -mt-[74px]">
       <div className="grid grid-cols-12 gap-2">
         <Select
           label="Property Type"
-          variant="bordered"
+          variant="flat"
           size="sm"
           className="col-span-6"
         >
           {propertyTypes.map((type) => (
-            <SelectItem key={type.key} value={type.key}>
-              {type.label}
-            </SelectItem>
+            <SelectItem key={type.key}>{type.label}</SelectItem>
           ))}
         </Select>
         <Input
           label="Something"
-          variant="bordered"
+          variant="flat"
           size="sm"
           className="col-span-6"
         />
         <Input
           label="Bedrooms"
-          variant="bordered"
+          variant="flat"
           size="sm"
           className="col-span-5"
         />
         <Input
           label="Bathrooms"
-          variant="bordered"
+          variant="flat"
           size="sm"
           className="col-span-5"
         />

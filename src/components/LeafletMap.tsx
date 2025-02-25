@@ -1,5 +1,5 @@
 import { LeafletEvent } from "leaflet";
-import { ComponentProps, ComponentType } from "react";
+import { ComponentProps } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
 type LocationMarkerProps = ComponentProps<typeof Marker>;
@@ -20,8 +20,8 @@ type LeafletMapProps = {
 };
 
 const LeafletMap = ({
-  center = [51.505, -0.09],
-  zoom = 4,
+  center = [16.80528, 96.15611],
+  zoom = 6,
   onMarkerMove,
 }: LeafletMapProps) => {
   return (
