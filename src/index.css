@@ -17,6 +17,10 @@
   }
 }
 
+.img-wrapper {
+  max-width: none !important;
+}
+
 .banner-font {
   font-family: "Poppins", serif;
 }

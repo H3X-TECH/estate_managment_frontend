@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { useGetUserProfile } from "../queries";
 import { Skeleton, Tab, Tabs } from "@heroui/react";
 import ProfileSetting from "../components/ProfileSetting";
 
@@ -19,47 +18,21 @@ const LabelAndValue = ({
 };
 
 export default function MainProfilePage() {
-  const { data, isLoading } = useGetUserProfile();
   return (
     <div className="max-w-screen-xl px-4 mx-auto py-4">
       <h4 className="text-2xl font-semibold mb-4">My Profile</h4>
-      <Tabs color="primary">
-        <Tab key="profile" title="Profile Details">
-          {isLoading ? (
-            <Skeleton
-              style={{
-                width: "100%",
-                height: "530px",
-              }}
-            />
-          ) : (
-            <ProfileSetting />
-          )}
+      <Tabs
+        color="primary"
+        placement="start"
+        classNames={{
+          tabList: "bg-default-200 p-3",
+        }}
+      >
+        <Tab key="profile" title="Profile Setting" className="flex-grow">
+          <ProfileSetting />
         </Tab>
-        <Tab key="account" title="Account Details">
-          <div className="w-full grid grid-cols-12 gap-6 bg-default-100 border rounded-md p-8">
-            <div className="col-span-6">
-              <LabelAndValue label="First Name" value={data?.data.firstName} />
-            </div>
-            <div className="col-span-6">
-              <LabelAndValue label="Last Name" value={data?.data.lastName} />
-            </div>
-            <div className="col-span-6">
-              <LabelAndValue
-                label="Prefer Name"
-                value={data?.data.preferName}
-              />
-            </div>
-            <div className="col-span-6">
-              <LabelAndValue label="Location" value={data?.data.location} />
-            </div>
-            <div className="col-span-6">
-              <LabelAndValue label="Phone No." value={data?.data.phoneNumber} />
-            </div>
-            <div className="col-span-6">
-              <LabelAndValue label="Joined At" value={data?.data.createdAt} />
-            </div>
-          </div>
+        <Tab key="account" title="Saved Properties" className="flex-grow">
+          <ProfileSetting />
         </Tab>
       </Tabs>
     </div>

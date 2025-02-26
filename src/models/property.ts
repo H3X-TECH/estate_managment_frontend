@@ -4,6 +4,8 @@ import type {
   RentPricingType,
 } from "~/config/constants";
 import { UserResponse } from "./user";
+import { Amenity } from "./amenity";
+import { Appointment } from "./appointment";
 
 // {
 //   "propertyId": "cm7kttxx00000z5ejhao4mezv",
@@ -76,6 +78,11 @@ export type PropertyResponse = {
     fileName: string;
     filePath: string;
   }>;
+};
+
+export type PropertyDetailResponse = PropertyResponse & {
+  amenities: Array<Amenity>;
+  appointments: Array<Appointment>;
 };
 
 export type CreatePropertyImagePayload = {

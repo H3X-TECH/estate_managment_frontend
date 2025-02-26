@@ -7,8 +7,9 @@ import SignUpPage from "~/features/auth/views/SignUpPage";
 import ForgotPasswordPage from "~/features/auth/views/ForgotPasswordPage";
 import ResetPasswordPage from "~/features/auth/views/ResetPasswordPage";
 import MainProfilePage from "~/features/profile/views/MainProfilePage";
-import AddListing from "~/features/sell/views/AddListing";
+import AddListing from "~/features/property/views/AddListing";
 import GoogleRedirectView from "~/features/auth/views/GoogleRedirectView";
+import PropertyDetailPage from "~/pages/PropertyDetailPage";
 
 const routesList = [
   {
@@ -35,6 +36,10 @@ const routesList = [
       {
         path: "/add-listing",
         element: <AddListing />,
+      },
+      {
+        path: "/property/:id",
+        element: <PropertyDetailPage />,
       },
     ],
   },

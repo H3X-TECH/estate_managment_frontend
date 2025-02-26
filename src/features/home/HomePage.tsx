@@ -9,21 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetcher } from "~/lib/fetcher";
 import { ApiResponse, PagingResponse } from "~/models/shared";
 import { PropertyResponse } from "~/models/property";
-
-const sample_images = [
-  {
-    src: estate_one,
-    alt: "Estate 1",
-  },
-  {
-    src: estate_two,
-    alt: "Estate 2",
-  },
-  {
-    src: estate_three,
-    alt: "Estate 3",
-  },
-];
+import { Link } from "react-router-dom";
 
 const useGetProperties = () => {
   return useQuery<ApiResponse<PagingResponse<PropertyResponse>>>({
@@ -49,7 +35,11 @@ const HomePage = () => {
           </div>
           <div className="flex items-center gap-4">
             {propertiesList.map((property) => (
-              <div key={property.propertyId} className="basis-1/3">
+              <Link
+                key={property.propertyId}
+                to={`/property/${property.propertyId}`}
+                className="basis-1/3"
+              >
                 <PropertyCard
                   title={property.title}
                   price={property.rentPrice}
@@ -64,7 +54,7 @@ const HomePage = () => {
                   listedBy={property.user.firstName}
                   postedAt={property.createdAt}
                 />
-              </div>
+              </Link>
             ))}
           </div>
         </section>
