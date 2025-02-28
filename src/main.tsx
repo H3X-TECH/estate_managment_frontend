@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import RouterEntry from "./routes/RouterEntry";
+import RouterEntry from "./router/RouterEntry";
 
 import {
   MutationCache,

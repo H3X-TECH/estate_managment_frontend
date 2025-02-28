@@ -3,7 +3,7 @@ import { HeroUIProvider } from "@heroui/react";
 import routesList from "./RoutesList";
 import { useQuery } from "@tanstack/react-query";
 import type { ApiResponse, UserProfile } from "~/models/shared";
-import { fetcher } from "~/lib/fetcher";
+import { fetcher } from "~/lib/api/fetcher";
 import { useEffect } from "react";
 import { useAuthStore } from "~/stores/auth";
 

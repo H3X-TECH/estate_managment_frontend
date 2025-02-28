@@ -1,4 +1,4 @@
-import { fetcher } from "~/lib/fetcher";
+import { fetcher } from "~/lib/api/fetcher";
 
 export const signUpUser = async (payload: unknown) => {
   return fetcher("post", "/auth/sign-up", payload);

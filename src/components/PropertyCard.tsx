@@ -15,7 +15,11 @@ import {
   MapPin,
   SquareDashedBottom,
 } from "lucide-react";
-import { PriceUnit, PropertyType, RentPricingType } from "~/config/constants";
+import {
+  PriceUnit,
+  PropertyType,
+  RentPricingType,
+} from "~/lib/config/constants";
 import {
   priceUnitEnumToLabel,
   propertyTypeEnumToLabel,

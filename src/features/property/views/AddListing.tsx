@@ -29,7 +29,7 @@ import {
   PROPERTY_TYPES_ENUM,
   RENT_PRICING_TYPES,
   RENT_PRICNG_TYPES_ENUM,
-} from "~/config/constants";
+} from "~/lib/config/constants";
 import { CreatePropertyPayload } from "~/models/property";
 
 const formSchema = z

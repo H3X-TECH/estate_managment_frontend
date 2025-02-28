@@ -1,4 +1,8 @@
-import { PriceUnit, PropertyType, RentPricingType } from "~/config/constants";
+import {
+  PriceUnit,
+  PropertyType,
+  RentPricingType,
+} from "~/lib/config/constants";
 
 export const propertyTypeEnumToLabel = (type: PropertyType) => {
   switch (type) {

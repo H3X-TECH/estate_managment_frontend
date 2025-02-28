@@ -6,7 +6,7 @@ import FilterSection from "./components/FilterSection";
 import PropertyCard from "~/components/PropertyCard";
 import { Button, Input } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
-import { fetcher } from "~/lib/fetcher";
+import { fetcher } from "~/lib/api/fetcher";
 import { ApiResponse, PagingResponse } from "~/models/shared";
 import { PropertyResponse } from "~/models/property";
 import { Link } from "react-router-dom";

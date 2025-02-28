@@ -1,4 +1,4 @@
-import { fetcher } from "~/lib/fetcher";
+import { fetcher } from "~/lib/api/fetcher";
 import type { UpdateUserProfilePayload } from "../models";
 
 export const getUserDataById = () => {

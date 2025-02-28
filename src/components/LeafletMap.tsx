@@ -17,12 +17,14 @@ type LeafletMapProps = {
   center?: [number, number];
   zoom?: number;
   onMarkerMove?: (e: LeafletEvent) => void;
+  viewOnly?: boolean;
 };
 
 const LeafletMap = ({
   center = [16.80528, 96.15611],
   zoom = 6,
   onMarkerMove,
+  viewOnly = false,
 }: LeafletMapProps) => {
   return (
     <div className="w-full h-full">
@@ -33,7 +35,7 @@ const LeafletMap = ({
         />
         <LocationMarker
           position={center}
-          draggable
+          draggable={!viewOnly}
           eventHandlers={{
             move: (e) => onMarkerMove?.(e),
           }}

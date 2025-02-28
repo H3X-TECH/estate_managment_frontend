@@ -2,7 +2,7 @@ import type {
   PriceUnit,
   PropertyType,
   RentPricingType,
-} from "~/config/constants";
+} from "~/lib/config/constants";
 import { UserResponse } from "./user";
 import { Amenity } from "./amenity";
 import { Appointment } from "./appointment";

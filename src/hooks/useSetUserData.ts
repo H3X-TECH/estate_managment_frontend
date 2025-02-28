@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { fetcher } from "~/lib/fetcher";
+import { fetcher } from "~/lib/api/fetcher";
 import { ApiResponse } from "~/models/shared";
 import { useAuthStore } from "~/stores/auth";
 

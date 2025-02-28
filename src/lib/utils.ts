@@ -2,7 +2,7 @@ import { type ClassValue, clsx } from "clsx";
 import type { ReactNode } from "react";
 import { toast } from "sonner";
 import { twMerge } from "tailwind-merge";
-import supabaseClient from "./supabase";
+import supabaseClient from "./supabase/supabaseClient";
 import { v4 as uuidv4 } from "uuid";
 
 export const cn = (...inputs: ClassValue[]) => {
