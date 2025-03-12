@@ -1,6 +1,13 @@
 import { useParams } from "react-router";
 import { useGetPropertyById } from "../queries";
-import { Avatar, Chip, Divider, Image, Skeleton } from "@heroui/react";
+import {
+  Avatar,
+  Chip,
+  Divider,
+  Image,
+  Skeleton,
+  useDisclosure,
+} from "@heroui/react";
 import {
   priceUnitEnumToLabel,
   rentPricingTypeEnumToLabel,
@@ -15,15 +22,43 @@ import {
   PhoneCallIcon,
   SofaIcon,
   SquareDashedBottomIcon,
+  Icon,
 } from "lucide-react";
+import { floorPlan } from "@lucide/lab";
 import LeafletMap from "~/components/LeafletMap";
 import { StyledButton } from "~/styled-components/StyledButton";
+import { ReactNode } from "react";
+import { cn } from "~/lib/utils";
+import AppointmentFormModal from "../components/AppointmentFormModal";
+
+function IconWithText({
+  icon,
+  text,
+  className,
+}: {
+  icon: ReactNode;
+  text: string;
+  className: string;
+}) {
+  return (
+    <div className={cn("flex items-center gap-2 col-span-4", className)}>
+      {icon}
+      <span className="text-sm">{text}</span>
+    </div>
+  );
+}
 
 export default function PropertyDetailView() {
   const { id = "" } = useParams();
   const { data, isLoading } = useGetPropertyById(id);
   console.log(data);
   const propertyDetailData = data?.data;
+
+  const {
+    isOpen: isModalOpen,
+    onOpen: onModalOpen,
+    onOpenChange: onModalOpenChange,
+  } = useDisclosure();
 
   if (isLoading || !propertyDetailData) {
     return (
@@ -58,7 +93,7 @@ export default function PropertyDetailView() {
                   <h4 className="text-xl">For Rent:&nbsp;</h4>
                   <h4 className="text-xl font-semibold">
                     {propertyDetailData.rentPrice}&nbsp;
-                    {priceUnitEnumToLabel(propertyDetailData.priceUnit)}&nbsp;
+                    {priceUnitEnumToLabel(propertyDetailData.priceUnit)}/
                     {rentPricingTypeEnumToLabel(propertyDetailData.rentPricing)}
                   </h4>
                 </div>
@@ -78,30 +113,41 @@ export default function PropertyDetailView() {
                   Property Details
                 </h4>
                 <div className="grid grid-cols-12 gap-6">
-                  <div className="flex items-center gap-2 col-span-4">
-                    <BedDoubleIcon />
-                    <span className="text-sm font-light">3 Bedrooms</span>
-                  </div>
-                  <div className="flex items-center gap-2 col-span-4">
-                    <BathIcon />
-                    <span className="text-sm font-light">3 Bathrooms</span>
-                  </div>
-                  <div className="flex items-center gap-2 col-span-4">
-                    <SquareDashedBottomIcon />
-                    <span className="text-sm font-light">300 sqft</span>
-                  </div>
-                  <div className="flex items-center gap-2 col-span-4">
-                    <HouseIcon />
-                    <span className="text-sm font-light">Condo</span>
-                  </div>
-                  <div className="flex items-center gap-2 col-span-4">
-                    <SofaIcon />
-                    <span className="text-sm font-light">Fully Furnished</span>
-                  </div>
-                  <div className="flex items-center gap-2 col-span-4">
-                    <CalendarClockIcon />
-                    <span className="text-sm font-light">11 hrs ago</span>
-                  </div>
+                  <IconWithText
+                    className="col-span-3"
+                    icon={<BedDoubleIcon />}
+                    text="3 Bedrooms"
+                  />
+                  <IconWithText
+                    className="col-span-3"
+                    icon={<BathIcon />}
+                    text="3 Bathrooms"
+                  />
+                  <IconWithText
+                    className="col-span-3"
+                    icon={<SquareDashedBottomIcon />}
+                    text="300 sqft"
+                  />
+                  <IconWithText
+                    className="col-span-3"
+                    icon={<Icon iconNode={floorPlan} />}
+                    text="Ground Floor"
+                  />
+                  <IconWithText
+                    className="col-span-3"
+                    icon={<HouseIcon />}
+                    text="Condo"
+                  />
+                  <IconWithText
+                    className="col-span-3"
+                    icon={<SofaIcon />}
+                    text="Fully Furnished"
+                  />
+                  <IconWithText
+                    className="col-span-3"
+                    icon={<CalendarClockIcon />}
+                    text="11 hrs ago"
+                  />
                 </div>
               </div>
               <Divider className="mt-8 mb-6" />
@@ -171,12 +217,21 @@ export default function PropertyDetailView() {
                 WhatsApp
               </StyledButton>
             </div>
-            <StyledButton className="w-full mt-4" size="lg" variant="bordered">
+            <StyledButton
+              className="w-full mt-4"
+              size="lg"
+              variant="bordered"
+              onPress={onModalOpen}
+            >
               Request a tour
             </StyledButton>
           </section>
         </div>
       </div>
+      <AppointmentFormModal
+        isOpen={isModalOpen}
+        onOpenChange={onModalOpenChange}
+      />
     </div>
   );
 }

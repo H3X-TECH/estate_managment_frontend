@@ -41,8 +41,8 @@ export const priceUnitEnumToLabel = (unit: PriceUnit) => {
 export const rentPricingTypeEnumToLabel = (type: RentPricingType) => {
   switch (type) {
     case "PER_MONTH":
-      return "Per Month";
+      return "mo";
     case "PER_YEAR":
-      return "Per Year";
+      return "year";
   }
 };
