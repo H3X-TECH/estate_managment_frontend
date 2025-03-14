@@ -15,7 +15,7 @@ import {
   MapPin,
   SquareDashedBottom,
 } from "lucide-react";
-import {
+import type {
   PriceUnit,
   PropertyType,
   RentPricingType,
@@ -91,10 +91,11 @@ export default function PropertyCard(props: PropertyCardProps) {
             <h4 className="text-lg font-semibold">{title}</h4>
             <div className="flex items-center">
               <h6 className="text-base font-medium">
-                {price} {priceUnitEnumToLabel(priceUnit)}&nbsp;
+                {price}&nbsp;
+                {priceUnitEnumToLabel(priceUnit)}
               </h6>
               <h6 className="text-base font-medium">
-                / {rentPricingTypeEnumToLabel(pricingType)}
+                /{rentPricingTypeEnumToLabel(pricingType)}
               </h6>
             </div>
             <div className="flex items-center gap-1">

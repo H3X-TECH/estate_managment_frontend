@@ -51,10 +51,8 @@ export default function Header() {
             <Dropdown>
               <DropdownTrigger>
                 <Avatar
-                  name={
-                    userData?.avatarUrl ||
-                    userData?.firstName.slice(0, 2).toLocaleUpperCase()
-                  }
+                  src={userData?.avatarUrl ?? ""}
+                  name={userData?.firstName.slice(0, 2).toLocaleUpperCase()}
                   color="primary"
                 />
               </DropdownTrigger>

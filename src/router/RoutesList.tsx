@@ -66,7 +66,7 @@ const routesList = [
     ],
   },
   {
-    path: "google/callback",
+    path: "google/auth/callback",
     element: <GoogleRedirectView />,
   },
 ];

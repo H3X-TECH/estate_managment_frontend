@@ -7,6 +7,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { useAuthStore } from "~/stores/auth";
 import { loginUser } from "../services";
+import { useGoogleOAuth } from "~/hooks/useGoogleOAuth";
 
 const schema = z.object({
   email: z.string().email("Please enter valid email"),
@@ -49,9 +50,7 @@ const LoginForm = () => {
     login.mutate(values);
   };
 
-  const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:5000/auth/google";
-  };
+  const { handleGoogleOAuth } = useGoogleOAuth();
 
   return (
     <>
@@ -90,10 +89,9 @@ const LoginForm = () => {
             <Divider className="flex-1" />
           </div>
           <StyledButton
-            as={Link}
-            href="http://localhost:5000/auth/google"
             color="default"
             className="w-full"
+            onClick={handleGoogleOAuth}
           >
             Google
           </StyledButton>

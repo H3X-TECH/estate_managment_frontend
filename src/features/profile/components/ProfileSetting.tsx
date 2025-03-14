@@ -58,7 +58,13 @@ export default function ProfileSetting() {
     <form onSubmit={handleSubmit(onFormSubmit)} className="w-full">
       <div className="w-full grid grid-cols-12 gap-8 bg-default-100 border rounded-md p-8">
         <div className="col-span-12 flex items-center gap-4">
-          <Avatar size="lg" name="H" color="primary" isBordered />
+          <Avatar
+            size="lg"
+            src={userData?.avatarUrl ?? ""}
+            name={userData?.firstName.slice(0, 2).toLocaleUpperCase()}
+            color="primary"
+            isBordered
+          />
           <div>
             <h4 className="text-xl font-semibold">
               {userData?.firstName} {userData?.lastName}

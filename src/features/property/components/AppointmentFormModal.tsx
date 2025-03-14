@@ -52,12 +52,30 @@ export default function AppointmentFormModal({
       <ModalContent as="form" onSubmit={handleSubmit(onSubmit)}>
         {(onClose) => (
           <>
-            <ModalHeader>Request Appointment</ModalHeader>
+            <ModalHeader>Schedule Tour</ModalHeader>
             <ModalBody className="space-y-4">
-              <div className="flex items-center gap-2">
+              <Controller
+                control={control}
+                name="date"
+                render={({ field }) => (
+                  <DatePicker
+                    variant="faded"
+                    label="Date"
+                    labelPlacement="inside"
+                    // @ts-ignore
+                    value={field.value ? field.value : null}
+                    onChange={(newDate) => field.onChange(newDate)}
+                    isInvalid={!!errors.date}
+                    errorMessage={errors.date?.message}
+                  />
+                )}
+              />
+              <div className="flex items-start gap-2">
                 <Input
                   variant="faded"
                   placeholder="Name"
+                  label="Name"
+                  labelPlacement="inside"
                   className="flex-1"
                   {...register("name")}
                   isInvalid={!!errors.name}
@@ -65,43 +83,32 @@ export default function AppointmentFormModal({
                 />
                 <Input
                   variant="faded"
-                  placeholder="Email"
-                  className="flex-1"
-                  {...register("email")}
-                  isInvalid={!!errors.email}
-                  errorMessage={errors.email?.message}
-                />
-              </div>
-              <div className="flex items-center gap-2">
-                <Input
-                  variant="faded"
                   placeholder="Phone No."
+                  label="Phone No."
+                  labelPlacement="inside"
+                  className="flex-1"
                   {...register("phone")}
                   isInvalid={!!errors.phone}
                   errorMessage={errors.phone?.message}
                 />
-                <Controller
-                  control={control}
-                  name="date"
-                  render={({ field }) => (
-                    <DatePicker
-                      variant="faded"
-                      // @ts-ignore
-                      value={field.value ? field.value : null}
-                      onChange={(newDate) => field.onChange(newDate)}
-                      isInvalid={!!errors.date}
-                      errorMessage={errors.date?.message}
-                    />
-                  )}
-                />
               </div>
+              <Input
+                variant="faded"
+                placeholder="Email"
+                label="Email"
+                labelPlacement="inside"
+                {...register("email")}
+                isInvalid={!!errors.email}
+                errorMessage={errors.email?.message}
+              />
+
               <Textarea variant="faded" placeholder="Message" minRows={3} />
             </ModalBody>
             <ModalFooter>
               <StyledButton variant="bordered" onPress={onClose}>
                 Cancel
               </StyledButton>
-              <StyledButton type="submit">Submit</StyledButton>
+              <StyledButton type="submit">Schedule</StyledButton>
             </ModalFooter>
           </>
         )}
