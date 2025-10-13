@@ -88,7 +88,9 @@ export default function PropertyCard(props: PropertyCardProps) {
       <div className="py-4 px-3 gap-2 flex flex-col">
         <div>
           <div className="space-y-1.5">
-            <h4 className="text-lg font-semibold">{title}</h4>
+            <h4 className="text-lg font-semibold truncate whitespace-nowrap">
+              {title}
+            </h4>
             <div className="flex items-center">
               <h6 className="text-base font-medium">
                 {price}&nbsp;
@@ -100,7 +102,7 @@ export default function PropertyCard(props: PropertyCardProps) {
             </div>
             <div className="flex items-center gap-1">
               <MapPin size={18} />
-              <h6 className="text-base">{location}</h6>
+              <h6 className="text-base truncate">{location}</h6>
             </div>
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-1">

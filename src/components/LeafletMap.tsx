@@ -1,5 +1,5 @@
-import { LeafletEvent } from "leaflet";
-import { ComponentProps } from "react";
+import type { LeafletEvent } from "leaflet";
+import type { ComponentProps } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
 type LocationMarkerProps = ComponentProps<typeof Marker>;

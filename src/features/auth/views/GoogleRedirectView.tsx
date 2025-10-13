@@ -20,8 +20,6 @@ export default function GoogleRedirectView() {
     },
   });
 
-  console.log("dddddggg");
-
   // useEffect(() => {
   //   const accessToken = searchParams.get("accessToken");
   //   const refreshToken = searchParams.get("refreshToken");
